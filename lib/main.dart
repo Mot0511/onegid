@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:onegid/models/Place.dart';
+import 'package:onegid/screens/addPost.dart';
 import 'package:onegid/screens/home.dart';
 import 'package:onegid/screens/map.dart';
+import 'package:onegid/screens/posts.dart';
 import 'package:yandex_maps_mapkit/init.dart' as init;
 import 'package:yandex_maps_mapkit/mapkit.dart';
 
@@ -20,7 +22,13 @@ class OneGid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home()
+      initialRoute: '/addPost',
+      routes: {
+        '/': (context) => Home(),
+        '/map': (context) => MapScreen(),
+        '/posts': (context) => Posts(),
+        '/addPost': (context) => AddPost()
+      },
     );
   }
 }

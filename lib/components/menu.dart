@@ -1,37 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:onegid/components/item.dart';
+import 'package:onegid/components/menuItem.dart';
 
 class Menu extends StatelessWidget{
   const Menu({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
-      flex: 1,
-      child: Padding(
+    return const Padding(
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
             Row(
               children: [
-                MenuItem(title: 'Item 1'),
-                MenuItem(title: 'Item 2'),
-                MenuItem(title: 'Item 3'),
-                MenuItem(title: 'Item 4'),
+                MenuItem(title: 'Отели', image: 'menuItems/hotel.png'),
+                MenuItem(title: 'Кафе', image: 'menuItems/restaurant.png'),
+                MenuItem(title: 'Аптеки', image: 'menuItems/apt.png'),
+                MenuItem(title: 'Кофейни', image: 'menuItems/cofe.png'),
               ]
             ),
             Row(
               children: [
-                MenuItem(title: 'Item 5'),
-                MenuItem(title: 'Item 6'),
-                MenuItem(title: 'Item 7'),
-                MenuItem(title: 'Item 8'),
+                MenuItem(title: 'Театры', image: 'menuItems/theatre.png'),
+                MenuItem(title: 'Банки', image: 'menuItems/bank.png'),
+                MenuItem(title: 'Развлечения', image: 'menuItems/entertainment.png'),
+                MenuItem(title: 'Парки', image: 'menuItems/park.png'),
               ]
             )
           ],
         )
-      )
-    );
+      );
   }
 }
 

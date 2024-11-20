@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:onegid/components/item.dart';
+import 'package:onegid/components/bottomMenuItem.dart';
 
 
 class BottomNav extends StatelessWidget {
@@ -9,9 +9,9 @@ class BottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Row(
       children: [
-        MenuItem(title: ''),
-        MenuItem(title: ''),
-        MenuItem(title: ''),
+        BottomMenuItem(image: 'bottomMenuItems/map.png', route: '/map'),
+        BottomMenuItem(image: 'bottomMenuItems/posts.png', route: '/posts'),
+        BottomMenuItem(image: 'bottomMenuItems/profile.png', route: '/profile'),
       ],
     );
   }

@@ -11,8 +11,7 @@ import 'package:onegid/models/Place.dart';
 
 
 class MapScreen extends StatefulWidget{
-  MapScreen({super.key, this.places});
-  List<Place>? places;
+  MapScreen({super.key});
 
   State<MapScreen> createState() => _MapScreen();
 }
@@ -36,38 +35,34 @@ class _MapScreen extends State<MapScreen>{
             places.add(place);
           }
         });
-        setState(() {
-          widget.places = places;
-          setPoints();
-        });
-    },
-    onSearchError: (error){},
-  );
+        _mapWindow!.map.mapObjects.clear();
+        print(places);
+        places.forEach((place) {
+          final imageProvider = image_provider.ImageProvider.fromImageProvider(const AssetImage("assets/point.png"));
+          final placemark = _mapWindow!.map.mapObjects.addPlacemark()
+            ..geometry = (place.position as Point)
+            ..setIcon(imageProvider);
+          }
+        );
+        },
+        onSearchError: (error){},
+      );
 
-  void setPoints() {
-    _mapWindow!.map.mapObjects.clear();
-    widget.places?.forEach((place) {
-      final imageProvider = image_provider.ImageProvider.fromImageProvider(const AssetImage("assets/point.png"));
-      final placemark = _mapWindow!.map.mapObjects.addPlacemark()
-        ..geometry = (place.position as Point)
-        ..setIcon(imageProvider);
-      }
-    );
-  }
 
   void search(searchText) {
-    final searchManager = SearchFactory.instance.createSearchManager(SearchManagerType.Combined);
-    final searchOptions = SearchOptions(
-      searchTypes: SearchType.Biz,
-      resultPageSize: 32,
-    );
-    final session = searchManager.submit(
-      VisibleRegionUtils.toPolygon(_mapWindow!.map.visibleRegion),
-      searchOptions,
-      searchSessionListener,
-      text: searchText,
-    );
-    
+    if (searchText != null){
+      final searchManager = SearchFactory.instance.createSearchManager(SearchManagerType.Combined);
+      final searchOptions = SearchOptions(
+        searchTypes: SearchType.Biz,
+        resultPageSize: 32,
+      );
+      final session = searchManager.submit(
+        VisibleRegionUtils.toPolygon(_mapWindow!.map.visibleRegion),
+        searchOptions,
+        searchSessionListener,
+        text: searchText,
+      );
+    }
   }
 
   void setPosition({latitude = 58.603595, longitude = 49.668023}) {
@@ -83,6 +78,7 @@ class _MapScreen extends State<MapScreen>{
 
   @override
   Widget build(BuildContext context){
+    final searchText = ModalRoute.of(context)!.settings.arguments;
     return (
       Scaffold(
         body: Stack(
@@ -92,7 +88,7 @@ class _MapScreen extends State<MapScreen>{
               mapkit.onStart();
               // final currentPosition = await getCurrentPosition();
               setPosition();
-              setPoints();
+              search(searchText);
             }),
             Padding(
               padding: EdgeInsets.all(20),
@@ -128,3 +124,9 @@ class _MapScreen extends State<MapScreen>{
 //     return true;
 //   }
 // }
+
+class MapArguments {
+  final String searchText;
+
+  const MapArguments({required this.searchText});
+}
