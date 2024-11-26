@@ -23,7 +23,7 @@ class MenuItem extends StatelessWidget {
             ]
           ),
         ),
-        onTap: () => Navigator.pushNamed(context, '/map', arguments: title),
+        onTap: () => Navigator.pushNamed(context, '/map', arguments: MapArguments(mode: MapMode.showPlaces, argument: title)),
       )
     );
   }

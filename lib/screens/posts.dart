@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:onegid/components/post.dart';
+import 'package:onegid/services/fetchPosts.dart';
 
 class Posts extends StatelessWidget{
-  const Posts({super.key});
+  Posts({super.key});
+
+  late final List<Post> posts = getPosts();
 
   @override
   Widget build(BuildContext context){
@@ -15,7 +18,8 @@ class Posts extends StatelessWidget{
           image: DecorationImage(image: AssetImage('assets/images/add.png'))
         ),
         child: InkWell(
-          onTap: () => Navigator.pushNamed(context, '/addPost')
+          onTap: () => getPosts()
+          // onTap: () => Navigator.pushNamed(context, '/addPost')
         ),
       ),
       body: Column(

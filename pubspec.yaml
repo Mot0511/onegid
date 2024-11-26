@@ -7,8 +7,12 @@ environment:
   sdk: ^3.5.1
 
 dependencies:
+  cloud_firestore: ^5.5.0
+  firebase_core: ^3.8.0
+  firebase_storage: ^12.3.6
   flutter:
     sdk: flutter
+  image_picker: ^1.1.2
   yandex_maps_mapkit: ^4.8.3-beta
   # geolocator: ^13.0.2
 
