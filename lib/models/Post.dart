@@ -6,7 +6,7 @@ import 'package:onegid/models/Place.dart';
 class Post {
   final String title;
   final String description;
-  final File image;
+  final image;
   final String cat;
   final List<Place> places;
 

@@ -28,4 +28,3 @@ class MenuItem extends StatelessWidget {
     );
   }
 }
-

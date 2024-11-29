@@ -1,32 +1,13 @@
 {
   "project_info": {
-    "project_number": "1033308085977",
-    "project_id": "polmaps",
-    "storage_bucket": "polmaps.appspot.com"
+    "project_number": "1075473189282",
+    "project_id": "polmaps-test",
+    "storage_bucket": "polmaps-test.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1033308085977:android:3dbd2cdaae8b2fe23428c8",
-        "android_client_info": {
-          "package_name": "com.example.maps"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCSdjuYW5GNQUh7mREcHuVSaqZ14d6PiuA"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1033308085977:android:7d2583501d2d4a173428c8",
+        "mobilesdk_app_id": "1:1075473189282:android:cce0b3cc04a0d411f88afb",
         "android_client_info": {
           "package_name": "com.example.polmapdevelop"
         }
@@ -34,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCSdjuYW5GNQUh7mREcHuVSaqZ14d6PiuA"
+          "current_key": "AIzaSyDcPBe5GI-FcCFSMMRSJn3DOoTY1rUfim4"
         }
       ],
       "services": {
@@ -45,7 +26,26 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1033308085977:android:86f714dd472f4be93428c8",
+        "mobilesdk_app_id": "1:1075473189282:android:32a0562512047a0af88afb",
+        "android_client_info": {
+          "package_name": "com.example.polmaps"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcPBe5GI-FcCFSMMRSJn3DOoTY1rUfim4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075473189282:android:3472fa8e97048836f88afb",
         "android_client_info": {
           "package_name": "ru.polbanki.onegid"
         }
@@ -53,7 +53,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCSdjuYW5GNQUh7mREcHuVSaqZ14d6PiuA"
+          "current_key": "AIzaSyDcPBe5GI-FcCFSMMRSJn3DOoTY1rUfim4"
         }
       ],
       "services": {

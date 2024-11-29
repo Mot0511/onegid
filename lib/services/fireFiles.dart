@@ -3,8 +3,9 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 
 Future<String> getFireUrl(String refPath) async {
+  print(refPath);
   final storageRef = FirebaseStorage.instance.ref();
-  final url = await storageRef.child(refPath).getDownloadURL();
+  final String url = await storageRef.child(refPath).getDownloadURL();
 
   return url;
 }

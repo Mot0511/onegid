@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:onegid/models/Post.dart' as model;
 import 'package:onegid/components/post.dart';
 import 'package:onegid/services/fetchPosts.dart';
 
 class Posts extends StatelessWidget{
   Posts({super.key});
 
-  late final List<Post> posts = getPosts();
-
+  late final Future<List<model.Post>> posts = getPosts();
+  
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -18,8 +19,7 @@ class Posts extends StatelessWidget{
           image: DecorationImage(image: AssetImage('assets/images/add.png'))
         ),
         child: InkWell(
-          onTap: () => getPosts()
-          // onTap: () => Navigator.pushNamed(context, '/addPost')
+          onTap: () => Navigator.pushNamed(context, '/addPost')
         ),
       ),
       body: Column(
@@ -41,42 +41,41 @@ class Posts extends StatelessWidget{
           ),
           Expanded(
             flex: 7,
-            child: ListView(
-              children: const [
-                Row(
+            child: FutureBuilder(
+              future: posts,
+              builder: (BuildContext context, AsyncSnapshot snap) {
+                final Widget widget;
+                if (snap.hasData) {
+                  final data = snap.data;
+                  List<Widget> lColumn = [];
+                  List<Widget> rColumn = [];
+                  for (var i = 0; i < data.length; i++) {
+                    if (i % 2 == 0){
+                      lColumn.add(Post(post: data[i]));
+                    } else {
+                      rColumn.add(Post(post: data[i]));
+                    }
+                  }
+                  widget = Row(
                     children: [
-                      Post(title: 'Post', image: ''),
-                      Post(title: 'Post', image: '')
+                      Column(
+                        children: lColumn,
+                      ),
+                      Column(
+                        children: rColumn,
+                      )
                     ],
-                  ),
-                  Row(
-                    children: [
-                      Post(title: 'Post', image: ''),
-                      Post(title: 'Post', image: '')
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Post(title: 'Post', image: ''),
-                      Post(title: 'Post', image: '')
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Post(title: 'Post', image: ''),
-                      Post(title: 'Post', image: '')
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Post(title: 'Post', image: ''),
-                      Post(title: 'Post', image: '')
-                    ],
-                  ),
-              ],
+                  );
+                  // children.add(Wrap(children: widgets));
+                } else if (snap.hasError) {
+                  widget = Text('${snap.error}');
+                } else {
+                  widget = Center(child: CircularProgressIndicator());
+                }
+                return ListView(children: [widget]);
+              },
             )
           )
-          
         ],
       ),
     );

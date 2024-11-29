@@ -41,46 +41,47 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCZt1AqfnhAKa8OKbdc1DccbPDYCEl8mR4',
-    appId: '1:1033308085977:web:ce8b38d17fce83d13428c8',
-    messagingSenderId: '1033308085977',
-    projectId: 'polmaps',
-    authDomain: 'polmaps.firebaseapp.com',
-    storageBucket: 'polmaps.appspot.com',
+    apiKey: 'AIzaSyCZw0vXiLj72dvEwOico2q79uug6SObSCQ',
+    appId: '1:1075473189282:web:a6dac85f564fa53bf88afb',
+    messagingSenderId: '1075473189282',
+    projectId: 'polmaps-test',
+    authDomain: 'polmaps-test.firebaseapp.com',
+    storageBucket: 'polmaps-test.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCSdjuYW5GNQUh7mREcHuVSaqZ14d6PiuA',
-    appId: '1:1033308085977:android:86f714dd472f4be93428c8',
-    messagingSenderId: '1033308085977',
-    projectId: 'polmaps',
-    storageBucket: 'polmaps.appspot.com',
+    apiKey: 'AIzaSyDcPBe5GI-FcCFSMMRSJn3DOoTY1rUfim4',
+    appId: '1:1075473189282:android:3472fa8e97048836f88afb',
+    messagingSenderId: '1075473189282',
+    projectId: 'polmaps-test',
+    storageBucket: 'polmaps-test.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDZy7KXALH9i34yWRhSF7uNeNnXhAfzsRc',
-    appId: '1:1033308085977:ios:aa2a49819e440f333428c8',
-    messagingSenderId: '1033308085977',
-    projectId: 'polmaps',
-    storageBucket: 'polmaps.appspot.com',
+    apiKey: 'AIzaSyD0BsEooYBOp1pPy0yZgT7p6AJ-BuGUBw8',
+    appId: '1:1075473189282:ios:c9d4d50c19e0dce0f88afb',
+    messagingSenderId: '1075473189282',
+    projectId: 'polmaps-test',
+    storageBucket: 'polmaps-test.appspot.com',
     iosBundleId: 'ru.polbanki.onegid',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDZy7KXALH9i34yWRhSF7uNeNnXhAfzsRc',
-    appId: '1:1033308085977:ios:aa2a49819e440f333428c8',
-    messagingSenderId: '1033308085977',
-    projectId: 'polmaps',
-    storageBucket: 'polmaps.appspot.com',
+    apiKey: 'AIzaSyD0BsEooYBOp1pPy0yZgT7p6AJ-BuGUBw8',
+    appId: '1:1075473189282:ios:c9d4d50c19e0dce0f88afb',
+    messagingSenderId: '1075473189282',
+    projectId: 'polmaps-test',
+    storageBucket: 'polmaps-test.appspot.com',
     iosBundleId: 'ru.polbanki.onegid',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCZt1AqfnhAKa8OKbdc1DccbPDYCEl8mR4',
-    appId: '1:1033308085977:web:54874b5c65c56a6e3428c8',
-    messagingSenderId: '1033308085977',
-    projectId: 'polmaps',
-    authDomain: 'polmaps.firebaseapp.com',
-    storageBucket: 'polmaps.appspot.com',
+    apiKey: 'AIzaSyCZw0vXiLj72dvEwOico2q79uug6SObSCQ',
+    appId: '1:1075473189282:web:31f426c3acbe072cf88afb',
+    messagingSenderId: '1075473189282',
+    projectId: 'polmaps-test',
+    authDomain: 'polmaps-test.firebaseapp.com',
+    storageBucket: 'polmaps-test.appspot.com',
   );
+
 }

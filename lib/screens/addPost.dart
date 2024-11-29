@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:onegid/components/place.dart';
 import 'package:onegid/models/Place.dart';
 import 'package:onegid/models/Post.dart';
 import 'dart:io';
@@ -19,13 +20,10 @@ class _AddPost extends State<AddPost>{
 
   String selectedCat = 'Нет';
   var imagePreview;
-  List<Place> choosenPlaces = [
-    Place(title: 'position1', position: mapkit.Point(longitude: 0, latitude: 0)),
-    Place(title: 'position2', position: mapkit.Point(longitude: 0, latitude: 0)),
-  ];
+  List<Place> choosenPlaces = [];
 
-  late final TextEditingController title = TextEditingController(text: 'testTitle');
-  late final TextEditingController description = TextEditingController(text: 'testDescription');
+  late final TextEditingController title = TextEditingController(text: '');
+  late final TextEditingController description = TextEditingController(text: '');
 
   void pickImage() async {
     ImagePicker picker = ImagePicker();
@@ -54,7 +52,6 @@ class _AddPost extends State<AddPost>{
     );
 
     addPost(post);
-
   }
 
   @override
@@ -86,27 +83,27 @@ class _AddPost extends State<AddPost>{
                 ),
               ),
             ),
-            Field(
-              heading: 'Выберите категорию поста',
-              widget: DropdownButton(
-                menuWidth: 500,
-                value: selectedCat,
-                onChanged: (value) {
-                  setState(() {
-                    selectedCat = (value as String);
-                  });
-                },
-                items: [
-                  DropdownMenuItem(child: Text('Нет'), value: 'Нет'),
-                  DropdownMenuItem(child: Text('Мультипост'), value: 'Мультипост'),
-                  DropdownMenuItem(child: Text('Кафе и еда'), value: 'Кафе и еда'),
-                  DropdownMenuItem(child: Text('Места отдыха'), value: 'Места отдыха'),
-                  DropdownMenuItem(child: Text('Развлечения'), value: 'Развлечения'),
-                  DropdownMenuItem(child: Text('Здоровье'), value: 'Здоровье'),
-                  DropdownMenuItem(child: Text('Отели'), value: 'Отели'),
-                ]
-              ),
-            ),         
+            // Field(
+            //   heading: 'Выберите категорию поста',
+            //   widget: DropdownButton(
+            //     menuWidth: 500,
+            //     value: selectedCat,
+            //     onChanged: (value) {
+            //       setState(() {
+            //         selectedCat = (value as String);
+            //       });
+            //     },
+            //     items: [
+            //       DropdownMenuItem(child: Text('Нет'), value: 'Нет'),
+            //       DropdownMenuItem(child: Text('Мультипост'), value: 'Мультипост'),
+            //       DropdownMenuItem(child: Text('Кафе и еда'), value: 'Кафе и еда'),
+            //       DropdownMenuItem(child: Text('Места отдыха'), value: 'Места отдыха'),
+            //       DropdownMenuItem(child: Text('Развлечения'), value: 'Развлечения'),
+            //       DropdownMenuItem(child: Text('Здоровье'), value: 'Здоровье'),
+            //       DropdownMenuItem(child: Text('Отели'), value: 'Отели'),
+            //     ]
+            //   ),
+            // ),         
             Field(
               heading: 'О чем вы хотите рассказать',
               widget: TextFormField(
@@ -146,7 +143,10 @@ class _AddPost extends State<AddPost>{
                   backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 34, 180, 115)),
                   foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
                 ),
-                onPressed: addPost_,
+                onPressed: () {
+                  addPost_();
+                  Navigator.of(context).pop();
+                },
                 child: Text('Создать пост'),
               )
             )
@@ -158,41 +158,7 @@ class _AddPost extends State<AddPost>{
   }
 }
 
-class PlaceItem extends StatelessWidget{
-  const PlaceItem({super.key, required this.place});
-  final Place place;
 
-  @override
-  Widget build(BuildContext context){
-    return Padding(
-      padding: EdgeInsets.only(bottom: 10),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Color.fromARGB(255, 87, 175, 128)
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 9,
-                child: Text(place.title, style: TextStyle(fontSize: 20, color: Colors.white))
-              ),
-              Expanded(
-                flex: 1,
-                child: InkWell(
-                  onTap: () => Navigator.pushNamed(context, '/map', arguments: MapArguments(mode: MapMode.showPlace, argument: place)),
-                  child: Image.asset('assets/images/placesdescbtn.png'),
-                )
-              )
-            ],
-          )
-        )
-      )
-    );
-  }
-}
 
 class Field extends StatelessWidget{
   const Field({super.key, required this.heading, required this.widget});

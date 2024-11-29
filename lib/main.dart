@@ -4,6 +4,9 @@ import 'package:onegid/screens/addPost.dart';
 import 'package:onegid/screens/home.dart';
 import 'package:onegid/screens/map.dart';
 import 'package:onegid/screens/posts.dart';
+import 'package:onegid/screens/signin.dart';
+import 'package:onegid/screens/signup.dart';
+import 'package:onegid/utils/prefs.dart';
 import 'package:yandex_maps_mapkit/init.dart' as init;
 import 'package:yandex_maps_mapkit/mapkit.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,18 +25,44 @@ void main() async {
   runApp(const OneGid());
 }
 
-class OneGid extends StatelessWidget {
+class OneGid extends StatefulWidget {
   const OneGid({super.key});
+
+  State<OneGid> createState() => OneGid_();
+}
+
+
+class OneGid_ extends State<OneGid>{
+  OneGid_();
+
+  bool isSigned = false;
+
+  @override
+  void initState() {
+    getLogin();
+  }
+
+  void getLogin() async {
+    final String? login = await getPrefs('login');
+    if (login != null){
+      isSigned = true;
+    } else {
+      isSigned = false;
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/posts',
+      initialRoute: isSigned ? '/' : '/signin',
       routes: {
         '/': (context) => Home(),
         '/map': (context) => MapScreen(),
         '/posts': (context) => Posts(),
-        '/addPost': (context) => AddPost()
+        '/addPost': (context) => AddPost(),
+        '/signin': (context) => Signin(),
+        '/signup': (context) => Signup(),
       },
     );
   }
