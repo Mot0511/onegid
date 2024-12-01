@@ -10,9 +10,28 @@ class Post extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(top: 100, left: 20, right: 20),
+        padding: EdgeInsets.only(left: 20, right: 20),
         child: ListView(
           children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: 50,
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Image.asset('assets/images/back_button_green.png', width: 50),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(post.title, style: TextStyle(fontSize: 20, color: Colors.green, fontWeight: FontWeight.bold))
+                    )
+                  ],
+                )
+              ),
+            ),
             Container(
               height: 300,
               decoration: BoxDecoration(
@@ -24,16 +43,23 @@ class Post extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: 20, top: 20),
-              child: Text(post.title, style: TextStyle(fontSize: 35)),
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Text(post.title, style: TextStyle(fontSize: 35, color: Colors.green)),
             ),
             Padding(
               padding: EdgeInsets.only(bottom: 20),
               child: Text(post.description, style: TextStyle(fontSize: 25)),
             ),
             Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(post.author, style: TextStyle(fontSize: 15)),
+              )
+            ),
+            Padding(
               padding: EdgeInsets.only(bottom: 20, top: 20),
-              child: Text('Связанные места', style: TextStyle(fontSize: 35)),
+              child: Text('Связанные места', style: TextStyle(fontSize: 35, color: Colors.green)),
             ),
             Column(
               children: List.generate(post.places.length, (i) => PlaceItem(place: post.places[i])),

@@ -31,3 +31,5 @@ flutter:
     - assets/images/menuItems/
     - assets/images/bottomMenuItems/
     - assets/images/
+    - assets/images/main_menu/
+    - assets/images/bottom_sheet/

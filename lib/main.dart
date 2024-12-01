@@ -55,7 +55,7 @@ class OneGid_ extends State<OneGid>{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: isSigned ? '/' : '/signin',
+      initialRoute: '/signin',
       routes: {
         '/': (context) => Home(),
         '/map': (context) => MapScreen(),

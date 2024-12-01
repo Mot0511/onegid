@@ -16,7 +16,7 @@ Future<void> addPost(Post post) async {
   });
 
   final data = {
-    'author': '',
+    'author': post.author,
     'category': post.cat,
     'create_datetime': DateTime.timestamp(),
     'description': post.description,
@@ -50,6 +50,7 @@ Future<List<Post>> getPosts() async {
     final Post post = Post(
       title: data['title'],
       description: data['description'],
+      author: data['author'],
       image: NetworkImage(imageUrl),
       cat: data['category'],
       places: places

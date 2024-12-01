@@ -6,6 +6,7 @@ import 'package:onegid/models/Post.dart';
 import 'dart:io';
 import 'package:onegid/screens/map.dart';
 import 'package:onegid/services/fetchPosts.dart';
+import 'package:onegid/utils/prefs.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart' as mapkit;
 import 'package:yandex_maps_mapkit/places.dart';
 
@@ -44,8 +45,10 @@ class _AddPost extends State<AddPost>{
   }
 
   void addPost_() async {
-    final Post post = Post(title: title.text, 
-      description: description.text, 
+    final Post post = Post(
+      title: title.text, 
+      description: description.text,
+      author: (await getPrefs('login') as String),
       places: choosenPlaces, 
       cat: selectedCat,
       image: imagePreview
@@ -61,6 +64,25 @@ class _AddPost extends State<AddPost>{
         padding: EdgeInsets.all(10),
         child: ListView(
           children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: 50,
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Image.asset('assets/images/back_button_green.png', width: 50),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text('Создать пост', style: TextStyle(fontSize: 30, color: Colors.green, fontWeight: FontWeight.bold))
+                    )
+                  ],
+                )
+              ),
+            ),
             Field(
               heading: 'Добавьте фотографию',
               widget: Center(

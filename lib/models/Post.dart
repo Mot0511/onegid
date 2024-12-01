@@ -6,9 +6,10 @@ import 'package:onegid/models/Place.dart';
 class Post {
   final String title;
   final String description;
+  final String author;
   final image;
   final String cat;
   final List<Place> places;
 
-  const Post({required this.title, required this.description, required this.image, required this.cat, required this.places});
+  const Post({required this.title, required this.description, required this.image, required this.cat, required this.author, required this.places});
 }

@@ -12,8 +12,9 @@ class PlaceItem extends StatelessWidget{
       padding: EdgeInsets.only(bottom: 10),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Color.fromARGB(255, 87, 175, 128)
+          border: Border.all(width: 2, color: const Color.fromARGB(255, 40, 96, 42)),
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.green
         ),
         child: Padding(
           padding: EdgeInsets.all(10),
@@ -21,7 +22,7 @@ class PlaceItem extends StatelessWidget{
             children: [
               Expanded(
                 flex: 9,
-                child: Text(place.title, style: TextStyle(fontSize: 20, color: Colors.white))
+                child: Text(place.title, style: TextStyle(fontSize: 30, color: Colors.white))
               ),
               Expanded(
                 flex: 1,

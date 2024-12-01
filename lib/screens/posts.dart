@@ -25,55 +25,48 @@ class Posts extends StatelessWidget{
       body: Column(
         children: [
           Expanded(
-            flex: 3,
+            flex: 1,
             child: Container(
               alignment: Alignment.centerLeft,
-              height: 280,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                image: const DecorationImage(image: AssetImage('assets/images/top_img.png'))
-              ),
-              child: const Padding(
-                padding: EdgeInsets.only(left: 30, top: 70),
-                child: Text('ИНТЕРЕСНЫЕ\nПОСТЫ', style: TextStyle(fontSize: 35, color: Colors.black87))
+              height: 50,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Row(
+                  children: [
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Image.asset('assets/images/back_button_green.png', width: 50),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text('ИНТЕРЕСНЫЕ ПОСТЫ', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))
+                    )
+                  ],
+                )
               )
             ),
           ),
           Expanded(
             flex: 7,
-            child: FutureBuilder(
-              future: posts,
-              builder: (BuildContext context, AsyncSnapshot snap) {
-                final Widget widget;
-                if (snap.hasData) {
-                  final data = snap.data;
-                  List<Widget> lColumn = [];
-                  List<Widget> rColumn = [];
-                  for (var i = 0; i < data.length; i++) {
-                    if (i % 2 == 0){
-                      lColumn.add(Post(post: data[i]));
-                    } else {
-                      rColumn.add(Post(post: data[i]));
-                    }
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: FutureBuilder(
+                future: posts,
+                builder: (BuildContext context, AsyncSnapshot snap) {
+                  final List<Widget> children = [];
+                  if (snap.hasData) {
+                    final data = snap.data;
+                    data.forEach((model.Post post) {
+                      children.add(Post(post: post));
+                    });
+                  } else if (snap.hasError) {
+                    children.add(Text('${snap.error}'));
+                  } else {
+                    children.add(Center(child: CircularProgressIndicator()));
                   }
-                  widget = Row(
-                    children: [
-                      Column(
-                        children: lColumn,
-                      ),
-                      Column(
-                        children: rColumn,
-                      )
-                    ],
-                  );
-                  // children.add(Wrap(children: widgets));
-                } else if (snap.hasError) {
-                  widget = Text('${snap.error}');
-                } else {
-                  widget = Center(child: CircularProgressIndicator());
-                }
-                return ListView(children: [widget]);
-              },
+                  return Wrap(children: children);
+                },
+              )
             )
           )
         ],
