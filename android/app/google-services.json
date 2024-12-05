@@ -12,7 +12,12 @@
           "package_name": "com.example.polmapdevelop"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1075473189282-s2q2del88ugnscmjja92f7icjs1fhjpr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDcPBe5GI-FcCFSMMRSJn3DOoTY1rUfim4"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075473189282-s2q2del88ugnscmjja92f7icjs1fhjpr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1075473189282-2ee6jqf68skei3hjut23b85ksgp8r6h8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ru.polbanki.onegid"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +48,12 @@
           "package_name": "com.example.polmaps"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1075473189282-s2q2del88ugnscmjja92f7icjs1fhjpr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDcPBe5GI-FcCFSMMRSJn3DOoTY1rUfim4"
@@ -39,7 +61,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075473189282-s2q2del88ugnscmjja92f7icjs1fhjpr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1075473189282-2ee6jqf68skei3hjut23b85ksgp8r6h8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ru.polbanki.onegid"
+              }
+            }
+          ]
         }
       }
     },
@@ -50,7 +84,20 @@
           "package_name": "ru.polbanki.onegid"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1075473189282-1gouq7hc6q5t3a0rd3osi3claheehk0t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.polbanki.onegid",
+            "certificate_hash": "d1673c3a15b7a906f41faec0139ca185a7c5e48f"
+          }
+        },
+        {
+          "client_id": "1075473189282-s2q2del88ugnscmjja92f7icjs1fhjpr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDcPBe5GI-FcCFSMMRSJn3DOoTY1rUfim4"
@@ -58,7 +105,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075473189282-s2q2del88ugnscmjja92f7icjs1fhjpr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1075473189282-2ee6jqf68skei3hjut23b85ksgp8r6h8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ru.polbanki.onegid"
+              }
+            }
+          ]
         }
       }
     }

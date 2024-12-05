@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onegid/components/selection.dart';
 import 'package:onegid/models/Post.dart' as model;
 import 'package:onegid/components/post.dart';
 import 'package:onegid/services/fetchPosts.dart';
@@ -48,27 +49,45 @@ class Posts extends StatelessWidget{
           ),
           Expanded(
             flex: 7,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: FutureBuilder(
-                future: posts,
-                builder: (BuildContext context, AsyncSnapshot snap) {
-                  final List<Widget> children = [];
-                  if (snap.hasData) {
-                    final data = snap.data;
-                    data.forEach((model.Post post) {
-                      children.add(Post(post: post));
-                    });
-                  } else if (snap.hasError) {
-                    children.add(Text('${snap.error}'));
-                  } else {
-                    children.add(Center(child: CircularProgressIndicator()));
-                  }
-                  return Wrap(children: children);
-                },
-              )
+            child: FutureBuilder(
+              future: posts,
+              builder: (BuildContext context, AsyncSnapshot snap) {
+                if (snap.hasData) {
+                  final List<Post> children = [];
+                  final data = snap.data;
+                  data.forEach((model.Post post) {
+                    children.add(Post(post: post));
+                  });
+                  return Selection(children: children);
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
             )
           )
+          // Expanded(
+          //   flex: 7,
+          //   child: Padding(
+          //     padding: EdgeInsets.symmetric(horizontal: 20),
+          //     child: FutureBuilder(
+          //       future: posts,
+          //       builder: (BuildContext context, AsyncSnapshot snap) {
+          //         final List<Widget> children = [];
+          //         if (snap.hasData) {
+          //           final data = snap.data;
+          //           data.forEach((model.Post post) {
+          //             children.add(Post(post: post));
+          //           });
+          //         } else if (snap.hasError) {
+          //           children.add(Text('${snap.error}'));
+          //         } else {
+          //           children.add(Center(child: CircularProgressIndicator()));
+          //         }
+          //         return Wrap(children: children);
+          //       },
+          //     )
+          //   )
+          // )
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:onegid/models/Place.dart';
 import 'package:onegid/models/Post.dart';
+import 'package:onegid/services/fetchCategories.dart';
 import 'package:onegid/services/fireFiles.dart';
 import 'package:onegid/utils/getGeoPosition.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart';
@@ -47,17 +48,19 @@ Future<List<Post>> getPosts() async {
     for (var entry in data['points'].entries) {
       places.add(Place(title: entry.key, position: Point(latitude: entry.value[0], longitude: entry.value[1])));
     }
+
+    final categories = await getCategories();
     final Post post = Post(
       title: data['title'],
       description: data['description'],
       author: data['author'],
       image: NetworkImage(imageUrl),
-      cat: data['category'],
+      cat: (categories[data['category']] as String),
+      catId: data['category'],
       places: places
     );
     posts.add(post);
   }
 
-  print('Summary: $posts');
   return posts;
 }

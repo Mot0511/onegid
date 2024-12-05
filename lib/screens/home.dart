@@ -27,11 +27,18 @@ class Home_ extends State<Home> {
 
   void getLogin() async {
     final String? res = await getPrefs('login');
-    if (login != null) {
+    if (res != null) {
       setState(() {
         login = (res as String);
       });
     }
+  }
+
+  Future<void> refresh() async {
+    final newPosts = getPosts();
+    setState(() {
+      posts = newPosts;
+    });
   }
 
   @override
@@ -105,11 +112,11 @@ class Home_ extends State<Home> {
                   data.forEach((model.Post post) {
                     children.add(Post(post: post));
                   });
-                  return Row(children: children);
+                  return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: children));
                 } else if (snap.hasError) {
-                  return Text('Произошла ошибка');
+                  return Text(snap.error.toString());
                 } else {
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 }
               })
             ),

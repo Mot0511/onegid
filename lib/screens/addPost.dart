@@ -5,6 +5,7 @@ import 'package:onegid/models/Place.dart';
 import 'package:onegid/models/Post.dart';
 import 'dart:io';
 import 'package:onegid/screens/map.dart';
+import 'package:onegid/services/fetchCategories.dart';
 import 'package:onegid/services/fetchPosts.dart';
 import 'package:onegid/utils/prefs.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart' as mapkit;
@@ -19,7 +20,8 @@ class AddPost extends StatefulWidget{
 class _AddPost extends State<AddPost>{
   _AddPost();
 
-  String selectedCat = 'Нет';
+  String selectedCat = '0';
+  late final Future<Map<String, String>> categories = getCategories();
   var imagePreview;
   List<Place> choosenPlaces = [];
 
@@ -51,7 +53,8 @@ class _AddPost extends State<AddPost>{
       author: (await getPrefs('login') as String),
       places: choosenPlaces, 
       cat: selectedCat,
-      image: imagePreview
+      catId: selectedCat,
+      image: imagePreview,
     );
 
     addPost(post);
@@ -105,27 +108,33 @@ class _AddPost extends State<AddPost>{
                 ),
               ),
             ),
-            // Field(
-            //   heading: 'Выберите категорию поста',
-            //   widget: DropdownButton(
-            //     menuWidth: 500,
-            //     value: selectedCat,
-            //     onChanged: (value) {
-            //       setState(() {
-            //         selectedCat = (value as String);
-            //       });
-            //     },
-            //     items: [
-            //       DropdownMenuItem(child: Text('Нет'), value: 'Нет'),
-            //       DropdownMenuItem(child: Text('Мультипост'), value: 'Мультипост'),
-            //       DropdownMenuItem(child: Text('Кафе и еда'), value: 'Кафе и еда'),
-            //       DropdownMenuItem(child: Text('Места отдыха'), value: 'Места отдыха'),
-            //       DropdownMenuItem(child: Text('Развлечения'), value: 'Развлечения'),
-            //       DropdownMenuItem(child: Text('Здоровье'), value: 'Здоровье'),
-            //       DropdownMenuItem(child: Text('Отели'), value: 'Отели'),
-            //     ]
-            //   ),
-            // ),         
+            Field(
+              heading: 'Выберите категорию поста',
+              widget: FutureBuilder(
+                future: categories,
+                builder: (BuildContext context, AsyncSnapshot snap) {
+                  if (snap.hasData) {
+                    final List<DropdownMenuItem<String>> children = [];
+                    final data = snap.data;
+                    data.forEach((key, value) {
+                      children.add(DropdownMenuItem(child: Text(value), value: key));
+                    });
+                    return DropdownButton(
+                      isExpanded: true,
+                      value: selectedCat,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCat = (value as String);
+                        });
+                      },
+                      items: children,
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
+              ),  
+            ),
             Field(
               heading: 'О чем вы хотите рассказать',
               widget: TextFormField(

@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1075473189282',
     projectId: 'polmaps-test',
     storageBucket: 'polmaps-test.appspot.com',
+    androidClientId: '1075473189282-1gouq7hc6q5t3a0rd3osi3claheehk0t.apps.googleusercontent.com',
+    iosClientId: '1075473189282-2ee6jqf68skei3hjut23b85ksgp8r6h8.apps.googleusercontent.com',
     iosBundleId: 'ru.polbanki.onegid',
   );
 
@@ -72,6 +74,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1075473189282',
     projectId: 'polmaps-test',
     storageBucket: 'polmaps-test.appspot.com',
+    androidClientId: '1075473189282-1gouq7hc6q5t3a0rd3osi3claheehk0t.apps.googleusercontent.com',
+    iosClientId: '1075473189282-2ee6jqf68skei3hjut23b85ksgp8r6h8.apps.googleusercontent.com',
     iosBundleId: 'ru.polbanki.onegid',
   );
 
