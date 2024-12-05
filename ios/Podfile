@@ -1,10 +1,10 @@
 platform :ios, '13.0'
 inhibit_all_warnings!
 
-target 'OneGid' do
+target 'Runner' do
   pod 'ObjectiveSugar', '~> 0.5'
 
-  target 'MyAppTests' do
+  target 'RunnerTests' do
     inherit! :search_paths
     pod 'OCMock', '~> 2.0.1'
   end
