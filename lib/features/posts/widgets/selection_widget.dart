@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:onegid/components/post.dart';
 import 'package:onegid/services/fetchCategories.dart';
+import 'package:onegid/features/posts/posts.dart';
 
 class Selection extends StatefulWidget{
   const Selection({super.key, required this.children});
-  final List<Post> children;
+  final List<PostWidget> children;
 
   State<Selection> createState() => _Selection();
 }
@@ -42,7 +42,7 @@ class _Selection extends State<Selection>{
         ),
         Builder(
           builder: (BuildContext context) {
-            final List<Post> children = [];
+            final List<PostWidget> children = [];
             widget.children.forEach((child) {
               if (selectedCat == child.post.catId) {
                 children.add(child);

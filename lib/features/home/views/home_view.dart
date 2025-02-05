@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:onegid/components/bottomNav.dart';
-import 'package:onegid/components/menu.dart';
-import 'package:onegid/components/menuItem.dart';
-import 'package:onegid/components/post.dart';
-import 'package:onegid/screens/map.dart';
+import 'package:onegid/features/home/home.dart';
+import 'package:onegid/features/posts/posts.dart';
+import 'package:onegid/features/auth/auth.dart';
+import 'package:onegid/features/map/map.dart';
 import 'package:onegid/services/fetchPosts.dart';
 import 'package:onegid/utils/prefs.dart';
-import 'package:onegid/models/Post.dart' as model;
+import 'package:onegid/features/posts/models/models.dart' as model;
 
 class Home extends StatefulWidget{
   const Home({super.key});
@@ -18,7 +17,7 @@ class Home_ extends State<Home> {
   Home_();
 
   String login = '';
-  late Future<List<model.Post>> posts = getPosts();
+  late Future<List<model.PostModel>> posts = getPosts();
 
   @override
   void initState() {
@@ -43,6 +42,10 @@ class Home_ extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final AccountModel? account = ModalRoute.of(context)!.settings.arguments as AccountModel?;
+    if (account != null) {
+      Navigator.pushNamed(context, '/signin');
+    }
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(10),
@@ -109,7 +112,7 @@ class Home_ extends State<Home> {
                 if (snap.hasData) {
                   List<Widget> children = [];
                   final data = snap.data;
-                  data.forEach((model.Post post) {
+                  data.forEach((model.PostModel post) {
                     children.add(Post(post: post));
                   });
                   return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: children));

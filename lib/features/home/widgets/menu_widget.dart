@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:onegid/components/menuItem.dart';
+import 'package:onegid/features/home/widgets/menu_item_widget.dart';
 
 class Menu extends StatelessWidget{
   const Menu({super.key});

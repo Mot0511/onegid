@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart' hide TextStyle;
-import 'package:yandex_maps_mapkit/mapkit.dart';
+import 'package:yandex_maps_mapkit/mapkit.dart' hide MapMode;
 import 'package:yandex_maps_mapkit/mapkit_factory.dart';
-import 'package:yandex_maps_mapkit/places.dart';
 import 'package:yandex_maps_mapkit/search.dart';
 import 'package:yandex_maps_mapkit/yandex_map.dart';
-import 'package:onegid/utils/getCurrentPosition.dart';
-import 'package:yandex_maps_mapkit/src/bindings/image/image_provider.dart'
-    as image_provider;
+import 'package:yandex_maps_mapkit/src/bindings/image/image_provider.dart' as image_provider;
 
-import 'package:onegid/models/Place.dart';
+import 'package:onegid/features/map/map.dart';
 
 
 class MapScreen extends StatefulWidget{
@@ -173,7 +170,6 @@ class _MapScreen extends State<MapScreen>{
                           )
                         )
                       )
-                      
                     ]
                   )
                 )
@@ -187,11 +183,5 @@ class _MapScreen extends State<MapScreen>{
 }
 
 
-enum MapMode {classic, showPlaces, showPlace, choosePlaces}
 
-class MapArguments {
-  final MapMode mode;
-  final argument;
 
-  const MapArguments({required this.mode, this.argument});
-}

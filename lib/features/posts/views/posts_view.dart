@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:onegid/components/selection.dart';
-import 'package:onegid/models/Post.dart' as model;
-import 'package:onegid/components/post.dart';
+import 'package:onegid/features/posts/models/models.dart' as model;
+import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/services/fetchPosts.dart';
 
 class Posts extends StatelessWidget{
   Posts({super.key});
 
-  late final Future<List<model.Post>> posts = getPosts();
+  late final Future<List<model.PostModel>> posts = getPosts();
   
   @override
   Widget build(BuildContext context){
@@ -53,10 +52,10 @@ class Posts extends StatelessWidget{
               future: posts,
               builder: (BuildContext context, AsyncSnapshot snap) {
                 if (snap.hasData) {
-                  final List<Post> children = [];
+                  final List<PostWidget> children = [];
                   final data = snap.data;
-                  data.forEach((model.Post post) {
-                    children.add(Post(post: post));
+                  data.forEach((model.PostModel post) {
+                    children.add(PostWidget(post: post));
                   });
                   return Selection(children: children);
                 } else {

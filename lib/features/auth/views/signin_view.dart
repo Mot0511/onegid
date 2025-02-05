@@ -2,43 +2,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_it/get_it.dart';
+import 'package:onegid/features/auth/models/account_model.dart';
+import 'package:onegid/features/auth/repositories/auth_repository.dart';
 import 'package:onegid/utils/prefs.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class Signup extends StatelessWidget{
-  Signup({super.key});
+class Signin extends StatelessWidget{
+  Signin({super.key});
 
-  late final TextEditingController login = TextEditingController(text: '');
   late final TextEditingController email = TextEditingController(text: '');
   late final TextEditingController password = TextEditingController(text: '');
 
-  void signup(context) async {
-    try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email.text,
-        password: password.text,
-      );
-      final db = FirebaseFirestore.instance;
-      db.collection('users').doc(email.text).set({
-        'email': email.text,
-        'nickname': login.text,
-        'favPlaces': []
-      });
-      await setPrefs('login', login.text);
-      Navigator.pushNamed(context, '/');
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
-        Fluttertoast.showToast(msg: 'Этот пользователь уже существует');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
+  final AuthRepository authRepository = GetIt.I<AuthRepository>();
+ 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color.fromRGBO(20, 184, 147, 1), Color.fromRGBO(151, 221, 156, 1)],
             begin: Alignment.topLeft,
@@ -47,11 +29,11 @@ class Signup extends StatelessWidget{
         ),
         child: ListView(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 70, left: 30),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Создать\nаккаунт', style: TextStyle(fontSize: 50, color: Colors.white, fontWeight: FontWeight.w800), textAlign: TextAlign.left)
+                child: Text('Добро пожаловать', style: TextStyle(fontSize: 50, color: Colors.white, fontWeight: FontWeight.w800), textAlign: TextAlign.left)
               ),
             ),
             Padding(
@@ -66,33 +48,27 @@ class Signup extends StatelessWidget{
                   child: Column(
                     children: [
                       TextField(
-                        controller: login,
-                        decoration: InputDecoration(
-                          hintText: 'Логин'
-                        ),
-                      ),
-                      TextField(
                         controller: email,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Почта'
                         ),
                       ),
                       TextField(
                         controller: password,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Пароль'
                         ),
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20),
+                          padding: const EdgeInsets.symmetric(vertical: 20),
                           child: Column(
                             children: [
-                              Text('Есть аккаунт?'),
+                              const Text('Нет аккаунта?'),
                               ElevatedButton(
-                                onPressed: () => Navigator.pushNamed(context, '/signin'), 
-                                child: Text('ВОЙТИ'),
+                                onPressed: () => Navigator.pushNamed(context, '/signup'), 
+                                child: Text('Создать'),
                                 style: ButtonStyle(
                                   backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 0, 0)),
                                   foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
@@ -105,8 +81,11 @@ class Signup extends StatelessWidget{
                       Align(
                         alignment: Alignment.centerRight,
                         child: ElevatedButton(
-                          onPressed: () => signup(context),
-                          child: Text('Создать'),
+                          onPressed: () async {
+                            AccountModel? account = await authRepository.signin(email.text, password.text);
+                            Navigator.pushNamed(context, '/', arguments: account);
+                          },
+                          child: const Text('ВОЙТИ'),
                           style: ButtonStyle(
                             backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 34, 180, 115)),
                             foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
@@ -118,7 +97,25 @@ class Signup extends StatelessWidget{
                 )
               )
             ),
-            
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                child: InkWell(
+                  onTap: () async {
+                    AccountModel account = await authRepository.signinWithGoogle();
+                    Navigator.pushNamed(context, '/', arguments: account);
+                  },
+                  child: Center(
+                    child: Text('Войти через Google', style: TextStyle(fontSize: 20)),
+                  ),
+                )
+              )
+            )
           ],
         )
       )

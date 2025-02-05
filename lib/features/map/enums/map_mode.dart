@@ -1,0 +1,1 @@
+enum MapMode {classic, showPlaces, showPlace, choosePlaces}

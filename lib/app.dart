@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:onegid/features/auth/views/signin_view.dart';
+import 'package:onegid/features/auth/views/signup_view.dart';
+import 'package:onegid/features/map/map.dart';
+import 'package:onegid/features/posts/posts.dart';
+import 'package:onegid/features/home/home.dart';
 import 'package:onegid/utils/prefs.dart';
 
 class OneGid extends StatefulWidget {

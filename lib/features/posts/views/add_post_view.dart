@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:onegid/components/place.dart';
-import 'package:onegid/models/Place.dart';
-import 'package:onegid/models/Post.dart';
+import 'package:onegid/features/map/map.dart';
+import 'package:onegid/features/posts/posts.dart';
 import 'dart:io';
-import 'package:onegid/screens/map.dart';
 import 'package:onegid/services/fetchCategories.dart';
 import 'package:onegid/services/fetchPosts.dart';
 import 'package:onegid/utils/prefs.dart';
-import 'package:yandex_maps_mapkit/mapkit.dart' as mapkit;
-import 'package:yandex_maps_mapkit/places.dart';
 
 class AddPost extends StatefulWidget{
   const AddPost({super.key});
 
+  @override
   State<AddPost> createState() => _AddPost();
 }
 
@@ -47,7 +44,7 @@ class _AddPost extends State<AddPost>{
   }
 
   void addPost_() async {
-    final Post post = Post(
+    final PostModel post = PostModel(
       title: title.text, 
       description: description.text,
       author: (await getPrefs('login') as String),

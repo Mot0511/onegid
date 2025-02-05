@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:onegid/models/Place.dart';
-import 'package:onegid/screens/map.dart';
+import 'package:onegid/features/map/map.dart';
+
 
 class PlaceItem extends StatelessWidget{
   const PlaceItem({super.key, required this.place});

@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:onegid/app.dart';
-import 'package:onegid/models/Place.dart';
-import 'package:onegid/screens/addPost.dart';
-import 'package:onegid/screens/home.dart';
-import 'package:onegid/screens/map.dart';
-import 'package:onegid/screens/posts.dart';
-import 'package:onegid/screens/signin.dart';
-import 'package:onegid/screens/signup.dart';
-import 'package:onegid/utils/prefs.dart';
+import 'package:onegid/features/auth/repositories/auth_repository.dart';
 import 'package:yandex_maps_mapkit/init.dart' as init;
-import 'package:yandex_maps_mapkit/mapkit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -23,6 +16,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  GetIt.I.registerSingleton(AuthRepository());
   runApp(const OneGid());
 }
 

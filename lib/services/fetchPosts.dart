@@ -1,14 +1,12 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:onegid/models/Place.dart';
-import 'package:onegid/models/Post.dart';
+import 'package:onegid/features/map/map.dart';
+import 'package:onegid/features/posts/models/models.dart';
 import 'package:onegid/services/fetchCategories.dart';
 import 'package:onegid/services/fireFiles.dart';
-import 'package:onegid/utils/getGeoPosition.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart';
 
-Future<void> addPost(Post post) async {
+Future<void> addPost(PostModel post) async {
   final db = FirebaseFirestore.instance;
 
   final points = {};
@@ -34,10 +32,10 @@ Future<void> addPost(Post post) async {
 }
 
 
-Future<List<Post>> getPosts() async {
+Future<List<PostModel>> getPosts() async {
   final db = FirebaseFirestore.instance;
 
-  final List<Post> posts = [];
+  final List<PostModel> posts = [];
   final snap = await db.collection('posts').get();
   for (var doc in snap.docs) {
     final id = doc.id;
@@ -50,7 +48,7 @@ Future<List<Post>> getPosts() async {
     }
 
     final categories = await getCategories();
-    final Post post = Post(
+    final PostModel post = PostModel(
       title: data['title'],
       description: data['description'],
       author: data['author'],

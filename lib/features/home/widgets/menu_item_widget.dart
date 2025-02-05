@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:onegid/screens/map.dart';
+import 'package:onegid/features/map/map.dart';
 
 class MenuItem extends StatelessWidget {
   const MenuItem({super.key, required this.title, required this.image});

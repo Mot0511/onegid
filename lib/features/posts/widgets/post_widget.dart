@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:onegid/models/Post.dart' as model;
+import 'package:onegid/features/posts/posts.dart' as model;
 import 'package:onegid/screens/Post.dart' as screen;
 
 class Post extends StatelessWidget{
   const Post({super.key, required this.post});
-  final model.Post post;
+  final model.PostModel post;
 
   @override
   Widget build(BuildContext context){

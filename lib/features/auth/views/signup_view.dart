@@ -2,61 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_it/get_it.dart';
+import 'package:onegid/features/auth/models/account_model.dart';
+import 'package:onegid/features/auth/repositories/auth_repository.dart';
 import 'package:onegid/utils/prefs.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
-class Signin extends StatelessWidget{
-  Signin({super.key});
+class Signup extends StatelessWidget{
+  Signup({super.key});
 
+  late final TextEditingController login = TextEditingController(text: '');
   late final TextEditingController email = TextEditingController(text: '');
   late final TextEditingController password = TextEditingController(text: '');
 
-  void signin(BuildContext context) async {
-    try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email.text,
-        password: password.text,
-      );
-      final db = FirebaseFirestore.instance;
-      db.collection('users').doc(email.text).get().then(((snap) async {
-        final data = snap.data();
-        await setPrefs('login', data!['nickname']);
-        Navigator.pushNamed(context, '/');
-      }));
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-credential') {
-        Fluttertoast.showToast(msg: 'Неверная почта или пароль');
-      }
-    }
-  }
+  final AuthRepository auth_repository = GetIt.I<AuthRepository>();
 
-  void signinWithGoogle(BuildContext context) async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-    final email = userCredential.user?.email;
-
-    final db = FirebaseFirestore.instance;
-    final docRef =  db.collection('users').doc(email);
-    final userdata = await docRef.get();
-    if (userdata.data() == null) {
-      docRef.set({
-        'email': email,
-        'nickname': email?.split('@')[0],
-      });
-    }
-
-    await setPrefs('login', email?.split('@')[0]);
-    Navigator.pushNamed(context, '/');
-  }
- 
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -74,7 +33,7 @@ class Signin extends StatelessWidget{
               padding: EdgeInsets.only(top: 70, left: 30),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Добро пожаловать', style: TextStyle(fontSize: 50, color: Colors.white, fontWeight: FontWeight.w800), textAlign: TextAlign.left)
+                child: Text('Создать\nаккаунт', style: TextStyle(fontSize: 50, color: Colors.white, fontWeight: FontWeight.w800), textAlign: TextAlign.left)
               ),
             ),
             Padding(
@@ -88,6 +47,12 @@ class Signin extends StatelessWidget{
                   padding: EdgeInsets.only(left: 10, right: 10, top: 35, bottom: 10),
                   child: Column(
                     children: [
+                      TextField(
+                        controller: login,
+                        decoration: InputDecoration(
+                          hintText: 'Логин'
+                        ),
+                      ),
                       TextField(
                         controller: email,
                         decoration: InputDecoration(
@@ -106,10 +71,10 @@ class Signin extends StatelessWidget{
                           padding: EdgeInsets.symmetric(vertical: 20),
                           child: Column(
                             children: [
-                              Text('Нет аккаунта?'),
+                              Text('Есть аккаунт?'),
                               ElevatedButton(
-                                onPressed: () => Navigator.pushNamed(context, '/signup'), 
-                                child: Text('Создать'),
+                                onPressed: () => Navigator.pushNamed(context, '/signin'), 
+                                child: Text('ВОЙТИ'),
                                 style: ButtonStyle(
                                   backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 0, 0)),
                                   foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
@@ -122,8 +87,11 @@ class Signin extends StatelessWidget{
                       Align(
                         alignment: Alignment.centerRight,
                         child: ElevatedButton(
-                          onPressed: () => signin(context),
-                          child: Text('ВОЙТИ'),
+                          onPressed: () async {
+                            AccountModel account = await auth_repository.signup(login.text, email.text, password.text);
+                            Navigator.pushNamed(context, '/', arguments: account);
+                          },
+                          child: Text('Создать'),
                           style: ButtonStyle(
                             backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 34, 180, 115)),
                             foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
@@ -135,22 +103,7 @@ class Signin extends StatelessWidget{
                 )
               )
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)
-                ),
-                child: InkWell(
-                  onTap: () => signinWithGoogle(context),
-                  child: Center(
-                    child: Text('Войти через Google', style: TextStyle(fontSize: 20)),
-                  ),
-                )
-              )
-            )
+            
           ],
         )
       )
