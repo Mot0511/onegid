@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:onegid/features/map/map.dart';
 import 'package:onegid/features/posts/posts.dart';
+import 'package:onegid/features/posts/repositories/posts_repository.dart';
 import 'dart:io';
 import 'package:onegid/services/fetchCategories.dart';
 import 'package:onegid/services/fetchPosts.dart';
@@ -17,19 +19,30 @@ class AddPost extends StatefulWidget{
 class _AddPost extends State<AddPost>{
   _AddPost();
 
+  final PostsRepository posts_repository = GetIt.I<PostsRepository>();
+
   String selectedCat = '0';
-  late final Future<Map<String, String>> categories = getCategories();
+  Map<String, String>? categories;
   var imagePreview;
   List<Place> choosenPlaces = [];
 
   late final TextEditingController title = TextEditingController(text: '');
   late final TextEditingController description = TextEditingController(text: '');
 
+  void getData() async {
+    categories = await posts_repository.getCategories();
+    setState(() {});
+  }
+
+  void initState() {
+    getData();
+  }
+
   void pickImage() async {
     ImagePicker picker = ImagePicker();
     XFile? ximage = await picker.pickImage(source: ImageSource.gallery);
     if (ximage != null){
-      File image = File(ximage!.path);
+      File image = File(ximage.path);
       setState(() {
         imagePreview = image;
       });
@@ -43,7 +56,7 @@ class _AddPost extends State<AddPost>{
     });
   }
 
-  void addPost_() async {
+  void addPost() async {
     final PostModel post = PostModel(
       title: title.text, 
       description: description.text,
@@ -54,18 +67,18 @@ class _AddPost extends State<AddPost>{
       image: imagePreview,
     );
 
-    addPost(post);
+    await posts_repository.addPost(post);
   }
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: ListView(
           children: [
             Padding(
-              padding: EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(bottom: 20),
               child: Container(
                 alignment: Alignment.centerLeft,
                 height: 50,
@@ -75,7 +88,7 @@ class _AddPost extends State<AddPost>{
                       onTap: () => Navigator.pop(context),
                       child: Image.asset('assets/images/back_button_green.png', width: 50),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: Text('Создать пост', style: TextStyle(fontSize: 30, color: Colors.green, fontWeight: FontWeight.bold))
                     )
@@ -87,7 +100,7 @@ class _AddPost extends State<AddPost>{
               heading: 'Добавьте фотографию',
               widget: Center(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 30),
+                  padding: const EdgeInsets.only(top: 30),
                   child: InkWell(
                     onTap: pickImage,
                     child: imagePreview == null ? Image.asset('assets/images/choose_photo.png', width: 200, height: 200) : Image.file(imagePreview),
@@ -99,7 +112,7 @@ class _AddPost extends State<AddPost>{
               heading: 'Дайте название посту',
               widget: TextFormField(
                 controller: title,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: 'Название (не больше 30 символов)'
                 ),
@@ -107,36 +120,30 @@ class _AddPost extends State<AddPost>{
             ),
             Field(
               heading: 'Выберите категорию поста',
-              widget: FutureBuilder(
-                future: categories,
-                builder: (BuildContext context, AsyncSnapshot snap) {
-                  if (snap.hasData) {
-                    final List<DropdownMenuItem<String>> children = [];
-                    final data = snap.data;
-                    data.forEach((key, value) {
-                      children.add(DropdownMenuItem(child: Text(value), value: key));
-                    });
-                    return DropdownButton(
-                      isExpanded: true,
-                      value: selectedCat,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedCat = (value as String);
-                        });
-                      },
-                      items: children,
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                },
-              ),  
+              widget: categories != null ?
+                Builder(builder: (BuildContext context) {
+                  final List<DropdownMenuItem<String>> children = [];
+                  categories?.forEach((key, value) {
+                    children.add(DropdownMenuItem(child: Text(value), value: key));
+                  });
+                  return DropdownButton(
+                    isExpanded: true,
+                    value: selectedCat,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCat = (value as String);
+                      });
+                    },
+                    items: children,
+                  );
+                }
+              ) : const SizedBox.shrink()
             ),
             Field(
               heading: 'О чем вы хотите рассказать',
               widget: TextFormField(
                 controller: description,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
                   labelText: 'Описание поста'
                 ),
@@ -148,7 +155,7 @@ class _AddPost extends State<AddPost>{
                 children: [
                   Center(
                     child: Padding(
-                      padding: EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.only(top: 30),
                       child: InkWell(
                         onTap: () => choosePlaces(context),
                         child: Image.asset('assets/images/mapadd_button.png', width: 100, height: 100),
@@ -156,7 +163,7 @@ class _AddPost extends State<AddPost>{
                     )
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.only(top: 20),
                     child: Column(
                       children: List.generate(choosenPlaces.length, (i) => PlaceItem(place: choosenPlaces[i]))
                     )
@@ -167,26 +174,19 @@ class _AddPost extends State<AddPost>{
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 34, 180, 115)),
-                  foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
-                ),
                 onPressed: () {
-                  addPost_();
+                  addPost();
                   Navigator.of(context).pop();
                 },
-                child: Text('Создать пост'),
+                child: const Text('Создать пост'),
               )
             )
-            // Heading(text: 'Аудиогид'),
           ]
         ),
       ),
     );
   }
 }
-
-
 
 class Field extends StatelessWidget{
   const Field({super.key, required this.heading, required this.widget});

@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:onegid/features/auth/models/models.dart';
+import 'package:onegid/repositories/base_repository.dart';
 import 'package:onegid/utils/prefs.dart';
 
-class AuthRepository {
+class AuthRepository extends FirebaseRepository {
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
-  final auth = FirebaseAuth.instance;
-  final db = FirebaseFirestore.instance;
 
   Future<AccountModel> signinWithGoogle() async {
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();

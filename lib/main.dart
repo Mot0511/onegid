@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:onegid/app.dart';
 import 'package:onegid/features/auth/repositories/auth_repository.dart';
+import 'package:onegid/features/posts/repositories/posts_repository.dart';
 import 'package:yandex_maps_mapkit/init.dart' as init;
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -18,6 +19,8 @@ void main() async {
   );
 
   GetIt.I.registerSingleton(AuthRepository());
+  GetIt.I.registerSingleton(PostsRepository());
+
   runApp(const OneGid());
 }
 

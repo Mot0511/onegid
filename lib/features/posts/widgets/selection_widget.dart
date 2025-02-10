@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:onegid/features/posts/repositories/posts_repository.dart';
 import 'package:onegid/services/fetchCategories.dart';
 import 'package:onegid/features/posts/posts.dart';
 
@@ -12,8 +14,20 @@ class Selection extends StatefulWidget{
 class _Selection extends State<Selection>{
   _Selection();
 
-  late final categories = getCategories();
+  final PostsRepository posts_repository = GetIt.I<PostsRepository>();
+
+  Map<String, String>? categories;
   String selectedCat = '0';
+
+  void getData() async {
+    categories = await posts_repository.getCategories();
+    setState(() {});
+  }
+ 
+  @override
+  void initState() {
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,21 +37,16 @@ class _Selection extends State<Selection>{
           padding: EdgeInsets.symmetric(vertical: 10),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: FutureBuilder(
-              future: categories,
-              builder: (BuildContext context, AsyncSnapshot snap) {
-                if (snap.hasData) {
-                  final List<Widget> children = [];
-                  final data = snap.data;
-                  data.forEach((key, value) {
-                    children.add(CatItem(title: value, value: key, selectedCat: selectedCat, onClick: () => setState(() => selectedCat = key)));
-                  });
-                  return Row(children: children);
-                } else {
-                  return SizedBox.shrink();
-                }
-              },
-            )
+            child: categories == null ?
+              SizedBox.shrink() :
+              Builder(builder: (BuildContext context) {
+                final List<Widget> children = [];
+                categories?.forEach((key, value) {
+                  children.add(CatItem(title: value, value: key, selectedCat: selectedCat, onClick: () => setState(() => selectedCat = key)));
+                });
+                return Row(children: children);
+              })
+        
           ),
         ),
         Builder(

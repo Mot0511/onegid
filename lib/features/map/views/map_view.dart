@@ -112,23 +112,21 @@ class _MapScreen extends State<MapScreen>{
             }),
             Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Container(
-                    color: Colors.white,
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        hintText: "Поиск",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                              color: const Color(0xFFFFFFFF),
-                          )
-                        ),
+                Container(
+                  margin: EdgeInsets.all(20),
+                  color: Colors.white,
+                  child: TextField(
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      hintText: "Поиск",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(
+                            color: const Color(0xFFFFFFFF),
+                        )
                       ),
-                      onSubmitted: search,
-                    )
+                    ),
+                    onSubmitted: search,
                   )
                 ),
                 if (mapArguments.mode == MapMode.choosePlaces)
@@ -165,7 +163,6 @@ class _MapScreen extends State<MapScreen>{
                                 onTap: () => setState(() {choosenPlaces = [];}),
                                 child: Text('Очистить'),
                               )
-                              
                             ]
                           )
                         )

@@ -36,86 +36,84 @@ class Signin extends StatelessWidget{
                 child: Text('Добро пожаловать', style: TextStyle(fontSize: 50, color: Colors.white, fontWeight: FontWeight.w800), textAlign: TextAlign.left)
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10, right: 10, top: 35, bottom: 10),
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: email,
-                        decoration: const InputDecoration(
-                          hintText: 'Почта'
-                        ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 10, right: 10, top: 35, bottom: 10),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: email,
+                      decoration: const InputDecoration(
+                        hintText: 'Почта'
                       ),
-                      TextField(
-                        controller: password,
-                        decoration: const InputDecoration(
-                          hintText: 'Пароль'
-                        ),
+                    ),
+                    TextField(
+                      controller: password,
+                      decoration: const InputDecoration(
+                        hintText: 'Пароль'
                       ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Column(
-                            children: [
-                              const Text('Нет аккаунта?'),
-                              ElevatedButton(
-                                onPressed: () => Navigator.pushNamed(context, '/signup'), 
-                                child: Text('Создать'),
-                                style: ButtonStyle(
-                                  backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 0, 0)),
-                                  foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
-                                )
-                              ),
-                            ],
-                          )
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Column(
+                          children: [
+                            const Text('Нет аккаунта?'),
+                            ElevatedButton(
+                              onPressed: () => Navigator.pushNamed(context, '/signup'), 
+                              child: Text('Создать'),
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 0, 0)),
+                                foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
+                              )
+                            ),
+                          ],
                         )
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
+                      )
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          width: 60,
+                          height: 50,
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey)
+                          ),
+                          child: InkWell(
+                            onTap: () async {
+                              AccountModel account = await authRepository.signinWithGoogle();
+                              Navigator.pushNamed(context, '/', arguments: account);
+                            },
+                            child: Center(
+                              child: Image.asset('assets/images/google.png'),
+                            ),
+                          )
+                        ),
+                        ElevatedButton(
                           onPressed: () async {
                             AccountModel? account = await authRepository.signin(email.text, password.text);
                             Navigator.pushNamed(context, '/', arguments: account);
                           },
                           child: const Text('ВОЙТИ'),
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 34, 180, 115)),
-                            foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
-                          )
+                          
                         ),
-                      )
-                    ],
-                  )
+                      ],
+                    )
+                  ],
                 )
               )
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)
-                ),
-                child: InkWell(
-                  onTap: () async {
-                    AccountModel account = await authRepository.signinWithGoogle();
-                    Navigator.pushNamed(context, '/', arguments: account);
-                  },
-                  child: Center(
-                    child: Text('Войти через Google', style: TextStyle(fontSize: 20)),
-                  ),
-                )
-              )
-            )
+            
           ],
         )
       )

@@ -36,74 +36,71 @@ class Signup extends StatelessWidget{
                 child: Text('Создать\nаккаунт', style: TextStyle(fontSize: 50, color: Colors.white, fontWeight: FontWeight.w800), textAlign: TextAlign.left)
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10, right: 10, top: 35, bottom: 10),
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: login,
-                        decoration: InputDecoration(
-                          hintText: 'Логин'
-                        ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(left: 10, right: 10, top: 35, bottom: 10),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: login,
+                      decoration: InputDecoration(
+                        hintText: 'Логин'
                       ),
-                      TextField(
-                        controller: email,
-                        decoration: InputDecoration(
-                          hintText: 'Почта'
-                        ),
+                    ),
+                    TextField(
+                      controller: email,
+                      decoration: InputDecoration(
+                        hintText: 'Почта'
                       ),
-                      TextField(
-                        controller: password,
-                        decoration: InputDecoration(
-                          hintText: 'Пароль'
-                        ),
+                    ),
+                    TextField(
+                      controller: password,
+                      decoration: InputDecoration(
+                        hintText: 'Пароль'
                       ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Column(
-                            children: [
-                              Text('Есть аккаунт?'),
-                              ElevatedButton(
-                                onPressed: () => Navigator.pushNamed(context, '/signin'), 
-                                child: Text('ВОЙТИ'),
-                                style: ButtonStyle(
-                                  backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 0, 0)),
-                                  foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
-                                )
-                              ),
-                            ],
-                          )
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Column(
+                          children: [
+                            Text('Есть аккаунт?'),
+                            ElevatedButton(
+                              onPressed: () => Navigator.pushNamed(context, '/signin'), 
+                              child: Text('ВОЙТИ'),
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 0, 0)),
+                                foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
+                              )
+                            ),
+                          ],
+                        )
+                      )
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          AccountModel account = await auth_repository.signup(login.text, email.text, password.text);
+                          Navigator.pushNamed(context, '/', arguments: account);
+                        },
+                        child: Text('Создать'),
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 34, 180, 115)),
+                          foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
                         )
                       ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            AccountModel account = await auth_repository.signup(login.text, email.text, password.text);
-                            Navigator.pushNamed(context, '/', arguments: account);
-                          },
-                          child: Text('Создать'),
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 34, 180, 115)),
-                            foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
-                          )
-                        ),
-                      )
-                    ],
-                  )
+                    )
+                  ],
                 )
               )
-            ),
-            
+            )
           ],
         )
       )
