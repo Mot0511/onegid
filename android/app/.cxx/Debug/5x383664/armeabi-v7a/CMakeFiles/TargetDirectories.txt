@@ -1,0 +1,2 @@
+/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/CMakeFiles/rebuild_cache.dir
