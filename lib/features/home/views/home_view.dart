@@ -48,6 +48,7 @@ class Home_ extends State<Home> {
   Widget build(BuildContext context) {
     getLogin(context);
     final AccountModel? account = ModalRoute.of(context)!.settings.arguments as AccountModel?;
+    final theme = Theme.of(context);
     // if (account != null) {
     //   Navigator.pushNamed(context, '/signin');
     // }
@@ -105,11 +106,11 @@ class Home_ extends State<Home> {
                   )
                 )
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(bottom: 10),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Недавние посты', style: TextStyle(fontSize: 25, color: Colors.green))
+                  child: Text('Недавние посты', style: theme.textTheme.titleLarge?.copyWith(color: theme.primaryColor))
                 ),
               ),
               Padding(
@@ -138,7 +139,7 @@ class Home_ extends State<Home> {
                 padding: EdgeInsets.only(bottom: 10),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Что Вы ищете?', style: TextStyle(fontSize: 25, color: Colors.green))
+                  child: Text('Что Вы ищете?', style: theme.textTheme.titleLarge?.copyWith(color: theme.primaryColor))
                 ),
               ),
               Row(
@@ -151,7 +152,7 @@ class Home_ extends State<Home> {
                         child:  Column(
                         children: [
                           Image.asset('assets/images/main_menu/open_map.png', width: 120),
-                          Text('Открыть\nкарту', style: TextStyle(color: Colors.green), textAlign: TextAlign.center)
+                          Text('Открыть\nкарту', style: theme.textTheme.labelMedium, textAlign: TextAlign.center)
                         ],
                       )
                     )

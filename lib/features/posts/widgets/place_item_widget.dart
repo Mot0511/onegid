@@ -8,12 +8,13 @@ class PlaceItem extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
+    final theme = Theme.of(context);
     return Container(
       margin: EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
         border: Border.all(width: 2, color: const Color.fromARGB(255, 40, 96, 42)),
         borderRadius: BorderRadius.circular(20),
-        color: Colors.green
+        color: theme.primaryColor
       ),
       child: Padding(
         padding: EdgeInsets.all(10),

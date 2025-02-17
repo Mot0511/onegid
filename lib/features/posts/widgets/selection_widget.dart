@@ -74,14 +74,15 @@ class CatItem extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5),
       child: Container(
         height: 50,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.green, width: 2),
-          color: value == selectedCat ? Colors.green : Colors.white,
+          border: Border.all(color: theme.primaryColor, width: 2),
+          color: value == selectedCat ? theme.primaryColor : Colors.transparent,
         ),
         child: InkWell(
           onTap: () {
@@ -92,7 +93,7 @@ class CatItem extends StatelessWidget{
           child: Padding(
             padding: EdgeInsets.all(10),
             child: Center(
-              child: Text(title, style: TextStyle(fontSize: 18, color: value == selectedCat ? Colors.white : Colors.green))
+              child: Text(title, style: TextStyle(fontSize: 18, color: value == selectedCat ? Colors.white : theme.primaryColor))
             ),
           )
         )

@@ -31,6 +31,7 @@ class _PostsState extends State<Posts> {
 
   @override
   Widget build(BuildContext context){
+    final theme = Theme.of(context);
     return Scaffold(
       floatingActionButton: const AddBtnWidget(path: 'addPost'),
       body: RefreshIndicator(
@@ -51,9 +52,9 @@ class _PostsState extends State<Posts> {
                         onTap: () => Navigator.pop(context),
                         child: Image.asset('assets/images/back_button_green.png', width: 50),
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(left: 10),
-                        child: Text('ИНТЕРЕСНЫЕ ПОСТЫ', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))
+                        child: Text('ИНТЕРЕСНЫЕ ПОСТЫ', style: theme.textTheme.headlineMedium)
                       )
                     ],
                   )

@@ -4,6 +4,7 @@ import 'package:onegid/features/map/map.dart';
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/features/home/home.dart';
 import 'package:onegid/features/profile/profile.dart';
+import 'package:onegid/themes/dark.dart';
 import 'package:onegid/utils/prefs.dart';
 import 'package:onegid/themes/light.dart';
 
@@ -20,8 +21,10 @@ class OneGid_ extends State<OneGid>{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: themeLight,
-      initialRoute: '/',
+      darkTheme: darkTheme,
+      theme: ligthTheme,
+      themeMode: ThemeMode.dark,
+      initialRoute: '/addPost',
       routes: {
         '/': (context) => Home(),
         '/map': (context) => MapScreen(),

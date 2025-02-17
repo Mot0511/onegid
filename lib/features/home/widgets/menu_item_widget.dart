@@ -8,6 +8,7 @@ class MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context){
+    final theme = Theme.of(context);
     return InkWell(
       child: Padding(
         padding: EdgeInsets.all(10),
@@ -18,7 +19,7 @@ class MenuItem extends StatelessWidget {
               height: 65,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.green
+                color: theme.primaryColor
               ),
               child: Padding(
                 padding: EdgeInsets.all(1),
@@ -27,7 +28,7 @@ class MenuItem extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 5),
-              child: Text(title, style: const TextStyle(fontSize: 10, color: Colors.green))
+              child: Text(title, style: theme.textTheme.labelSmall)
             )
           ]
         ),

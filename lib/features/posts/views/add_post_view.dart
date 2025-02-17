@@ -72,6 +72,7 @@ class _AddPost extends State<AddPost>{
 
   @override
   Widget build(BuildContext context){
+    final theme = Theme.of(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -88,9 +89,9 @@ class _AddPost extends State<AddPost>{
                       onTap: () => Navigator.pop(context),
                       child: Image.asset('assets/images/back_button_green.png', width: 50),
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(left: 10),
-                      child: Text('Создать пост', style: TextStyle(fontSize: 30, color: Colors.green, fontWeight: FontWeight.bold))
+                      child: Text('Создать пост', style: theme.textTheme.headlineLarge)
                     )
                   ],
                 )
@@ -195,13 +196,14 @@ class Field extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
+    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.all(10),
       child: Padding(
         padding: EdgeInsets.only(bottom: 50),
         child: Column(
           children: [
-            Text(heading, textAlign: TextAlign.center, style: TextStyle(fontSize: 30, color: Colors.black, fontWeight: FontWeight.w500)),
+            Text(heading, textAlign: TextAlign.center, style: theme.textTheme.titleLarge),
             widget
           ],
         )

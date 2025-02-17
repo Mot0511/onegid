@@ -48,7 +48,7 @@ class _ProfileViewState extends State<ProfileView> {
                 InkWell(
                   child: Padding(
                     padding: EdgeInsets.all(5),
-                    child: Text('Выйти из аккаунта', style: TextStyle(fontSize: 18))
+                    child: Text('Выйти из аккаунта', style: theme.textTheme.titleMedium)
                   ),
                   onTap: () => signout(context)
                 )

@@ -8,12 +8,13 @@ class PostWidget extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
+    final theme = Theme.of(context);
     return Container(
       width: 150,
       height: 150,
       margin: EdgeInsets.only(bottom: 10, right: 10),
       decoration: BoxDecoration(
-        border: Border.all(width: 3, color: Colors.green),
+        border: Border.all(width: 3, color: theme.primaryColor),
         borderRadius: BorderRadius.circular(20),
         image: DecorationImage(
           fit: BoxFit.cover,

@@ -8,6 +8,7 @@ class Post extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20),
@@ -25,7 +26,7 @@ class Post extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: Text(post.title, style: const TextStyle(fontSize: 20, color: Colors.green, fontWeight: FontWeight.bold))
+                    child: Text(post.title, style: theme.textTheme.headlineMedium)
                   )
                 ],
               )
@@ -42,22 +43,22 @@ class Post extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Text(post.title, style: TextStyle(fontSize: 35, color: Colors.green)),
+              child: Text(post.title, style: theme.textTheme.titleLarge),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
-              child: Text(post.description, style: TextStyle(fontSize: 25)),
+              child: Text(post.description, style: theme.textTheme.titleMedium),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: Align(
                 alignment: Alignment.centerRight,
-                child: Text(post.author, style: TextStyle(fontSize: 15)),
+                child: Text(post.author, style: theme.textTheme.titleSmall),
               )
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(bottom: 20, top: 20),
-              child: Text('Связанные места', style: TextStyle(fontSize: 35, color: Colors.green)),
+              child: Text('Связанные места', style: theme.textTheme.titleLarge),
             ),
             Column(
               children: List.generate(post.places.length, (i) => PlaceItem(place: post.places[i])),
