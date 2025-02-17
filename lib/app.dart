@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:onegid/screens/addPost.dart';
-import 'package:onegid/screens/home.dart';
-import 'package:onegid/screens/map.dart';
-import 'package:onegid/screens/posts.dart';
-import 'package:onegid/screens/signin.dart';
-import 'package:onegid/screens/signup.dart';
+import 'package:onegid/features/auth/auth.dart';
+import 'package:onegid/features/map/map.dart';
+import 'package:onegid/features/posts/posts.dart';
+import 'package:onegid/features/home/home.dart';
+import 'package:onegid/features/profile/profile.dart';
 import 'package:onegid/utils/prefs.dart';
+import 'package:onegid/themes/light.dart';
 
 class OneGid extends StatefulWidget {
   const OneGid({super.key});
@@ -17,27 +17,11 @@ class OneGid extends StatefulWidget {
 class OneGid_ extends State<OneGid>{
   OneGid_();
 
-  bool isSigned = false;
-
-  @override
-  void initState() {
-    getLogin();
-  }
-
-  void getLogin() async {
-    final String? login = await getPrefs('login');
-    if (login != null){
-      isSigned = true;
-    } else {
-      isSigned = false;
-    }
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/signin',
+      theme: themeLight,
+      initialRoute: '/',
       routes: {
         '/': (context) => Home(),
         '/map': (context) => MapScreen(),
@@ -45,6 +29,7 @@ class OneGid_ extends State<OneGid>{
         '/addPost': (context) => AddPost(),
         '/signin': (context) => Signin(),
         '/signup': (context) => Signup(),
+        '/profile': (context) => ProfileView()
       },
     );
   }

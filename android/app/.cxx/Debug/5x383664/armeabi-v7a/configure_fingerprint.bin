@@ -2,6 +2,7 @@ C/C++ Structured Log\
 Z
 X/Volumes/Files/Apps/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txtC
 A
+<<<<<<< HEAD
 ?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	óÅ‰Ñ2¤ °îçßÐ2h
 f
 d/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/additional_project_files.txt	óÅ‰Ñ2 Š€‰Ñ2e
@@ -26,3 +27,29 @@ g/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/metadat
 Z/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/prefab_config.json	óÅ‰Ñ2( Š€‰Ñ2c
 a
 _/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/symbol_folder_index.txt	óÅ‰Ñ2V Š€‰Ñ2
+=======
+?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	¾…äˆÑ2¤ °îçßÐ2h
+f
+d/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/additional_project_files.txt	¿…äˆÑ2 È§êåÐ2e
+c
+a/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/android_gradle_build.json	¿…äˆÑ2Å È§êåÐ2j
+h
+f/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/android_gradle_build_mini.json	¿…äˆÑ2Ì È§êåÐ2W
+U
+S/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/build.ninja	¿…äˆÑ2þÆ È§êåÐ2[
+Y
+W/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/build.ninja.txt	¿…äˆÑ2`
+^
+\/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/build_file_index.txt	¿…äˆÑ2X È§êåÐ2a
+_
+]/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/compile_commands.json	¿…äˆÑ2	e
+c
+a/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/compile_commands.json.bin	¿…äˆÑ2
+k
+i
+g/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/metadata_generation_command.txt	¿…äˆÑ2« È§êåÐ2^
+\
+Z/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/prefab_config.json	¿…äˆÑ2( È§êåÐ2c
+a
+_/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/armeabi-v7a/symbol_folder_index.txt	¿…äˆÑ2V È§êåÐ2
+>>>>>>> refactoring

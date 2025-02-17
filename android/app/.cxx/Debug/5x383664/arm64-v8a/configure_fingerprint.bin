@@ -2,6 +2,7 @@ C/C++ Structured Log\
 Z
 X/Volumes/Files/Apps/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txtC
 A
+<<<<<<< HEAD
 ?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	éÅ‰Ñ2¤ °îçßÐ2f
 d
 b/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/additional_project_files.txt	éÅ‰Ñ2 ¨‚€‰Ñ2c
@@ -26,3 +27,29 @@ Z
 X/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/prefab_config.json	êÅ‰Ñ2( ¨‚€‰Ñ2a
 _
 ]/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/symbol_folder_index.txt	êÅ‰Ñ2T ¨‚€‰Ñ2
+=======
+?com.android.build.gradle.internal.cxx.io.EncodedFileFingerPrint	¬…äˆÑ2¤ °îçßÐ2f
+d
+b/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/additional_project_files.txt	¬…äˆÑ2 àŸêåÐ2c
+a
+_/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/android_gradle_build.json	¬…äˆÑ2Á àŸêåÐ2h
+f
+d/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/android_gradle_build_mini.json	¬…äˆÑ2È àŸêåÐ2U
+S
+Q/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/build.ninja	¬…äˆÑ2òÆ àŸêåÐ2Y
+W
+U/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/build.ninja.txt	¬…äˆÑ2^
+\
+Z/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/build_file_index.txt	¬…äˆÑ2X àŸêåÐ2_
+]
+[/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/compile_commands.json	¬…äˆÑ2	c
+a
+_/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/compile_commands.json.bin	¬…äˆÑ2
+i
+g
+e/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/metadata_generation_command.txt	¬…äˆÑ2¡ àŸêåÐ2\
+Z
+X/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/prefab_config.json	¬…äˆÑ2( àŸêåÐ2a
+_
+]/Volumes/Files/Apps/onegid_/android/app/.cxx/Debug/5x383664/arm64-v8a/symbol_folder_index.txt	¬…äˆÑ2T àŸêåÐ2
+>>>>>>> refactoring
