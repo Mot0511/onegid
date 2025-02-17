@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:onegid/screens/addPost.dart';
+import 'package:onegid/screens/home.dart';
+import 'package:onegid/screens/map.dart';
+import 'package:onegid/screens/posts.dart';
+import 'package:onegid/screens/signin.dart';
+import 'package:onegid/screens/signup.dart';
 import 'package:onegid/utils/prefs.dart';
 
 class OneGid extends StatefulWidget {
