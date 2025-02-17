@@ -8,6 +8,7 @@ final textTheme = TextTheme(
   titleLarge: TextStyle(fontSize: 25, color: Colors.white),
   titleMedium: TextStyle(fontSize: 18, color: Colors.white),
   titleSmall: TextStyle(fontSize: 15, color: Colors.white),
+  labelLarge: TextStyle(fontSize: 18, color: Colors.white),
   labelMedium: TextStyle(color: Colors.white),
   labelSmall: TextStyle(fontSize: 10, color: primaryColor)
 );
@@ -15,6 +16,7 @@ final textTheme = TextTheme(
 
 final darkTheme = ThemeData(
   primaryColor: primaryColor,
+  canvasColor: const Color.fromARGB(255, 35, 35, 35),
   scaffoldBackgroundColor: Colors.black,
   progressIndicatorTheme: ProgressIndicatorThemeData(color: primaryColor),
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -28,16 +30,5 @@ final darkTheme = ThemeData(
     labelStyle: textTheme.labelMedium,
     focusColor: Colors.white
   ),
-  dropdownMenuTheme: DropdownMenuThemeData(
-    inputDecorationTheme: InputDecorationTheme(
-      labelStyle: textTheme.labelMedium,
-      focusColor: Colors.white,
-      fillColor: Colors.black54
-    ),
-    menuStyle: MenuStyle(
-      backgroundColor: WidgetStateProperty.all<Color>(Colors.black54)
-    )
-  ),
-  
   textTheme: textTheme
 );

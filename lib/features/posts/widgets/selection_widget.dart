@@ -84,7 +84,7 @@ class CatItem extends StatelessWidget{
           border: Border.all(color: theme.primaryColor, width: 2),
           color: value == selectedCat ? theme.primaryColor : Colors.transparent,
         ),
-        child: InkWell(
+        child: GestureDetector(
           onTap: () {
             print('$value, $selectedCat');
             onClick();

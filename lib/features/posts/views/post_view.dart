@@ -20,7 +20,7 @@ class Post extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 20),
               child: Row(
                 children: [
-                  InkWell(
+                  GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: Image.asset('assets/images/back_button_green.png', width: 50),
                   ),

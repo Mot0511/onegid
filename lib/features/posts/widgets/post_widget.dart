@@ -21,7 +21,7 @@ class PostWidget extends StatelessWidget{
           image: post.image
         )
       ),
-      child: InkWell(
+      child: GestureDetector(
         onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => screen.Post(post: post))),
         child: Container(
           decoration: BoxDecoration(

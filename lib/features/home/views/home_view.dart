@@ -80,8 +80,9 @@ class Home_ extends State<Home> {
                         onTap: () => Navigator.of(context).pushNamed('/profile'),
                         child: Image.asset('assets/images/profile_image.png')
                       ),
-                      const InkWell(
-                        child: Icon(Icons.menu, size: 40, color: Colors.white),
+                      InkWell(
+                        onTap: () => Navigator.of(context).pushNamed('/settings'),
+                        child: const Icon(Icons.menu, size: 40, color: Colors.white),
                       ),
                     ],
                   )
@@ -152,7 +153,7 @@ class Home_ extends State<Home> {
                         child:  Column(
                         children: [
                           Image.asset('assets/images/main_menu/open_map.png', width: 120),
-                          Text('Открыть\nкарту', style: theme.textTheme.labelMedium, textAlign: TextAlign.center)
+                          Text('Открыть\nкарту', style: theme.textTheme.labelMedium?.copyWith(color: theme.primaryColor), textAlign: TextAlign.center)
                         ],
                       )
                     )

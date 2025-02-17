@@ -112,6 +112,7 @@ class _AddPost extends State<AddPost>{
             Field(
               heading: 'Дайте название посту',
               widget: TextFormField(
+                style: theme.textTheme.labelLarge,
                 controller: title,
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
@@ -143,6 +144,7 @@ class _AddPost extends State<AddPost>{
             Field(
               heading: 'О чем вы хотите рассказать',
               widget: TextFormField(
+                style: theme.textTheme.labelLarge,
                 controller: description,
                 decoration: const InputDecoration(
                   border: UnderlineInputBorder(),
