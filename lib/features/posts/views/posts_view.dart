@@ -4,7 +4,6 @@ import 'package:onegid/features/posts/models/models.dart' as model;
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/features/posts/repositories/posts_repository.dart';
 import 'package:onegid/features/posts/widgets/add_btn_widget.dart';
-import 'package:onegid/services/fetchPosts.dart';
 
 class Posts extends StatefulWidget{
   Posts({super.key});

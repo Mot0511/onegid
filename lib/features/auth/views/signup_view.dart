@@ -87,8 +87,8 @@ class Signup extends StatelessWidget{
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
                         onPressed: () async {
-                          AccountModel account = await auth_repository.signup(login.text, email.text, password.text);
-                          Navigator.pushNamed(context, '/', arguments: account);
+                          await auth_repository.signup(login.text, email.text, password.text);
+                          Navigator.pushNamed(context, '/');
                         },
                         child: Text('Создать'),
                         style: ButtonStyle(

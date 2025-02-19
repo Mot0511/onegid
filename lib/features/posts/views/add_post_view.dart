@@ -5,8 +5,6 @@ import 'package:onegid/features/map/map.dart';
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/features/posts/repositories/posts_repository.dart';
 import 'dart:io';
-import 'package:onegid/services/fetchCategories.dart';
-import 'package:onegid/services/fetchPosts.dart';
 import 'package:onegid/utils/prefs.dart';
 
 class AddPost extends StatefulWidget{

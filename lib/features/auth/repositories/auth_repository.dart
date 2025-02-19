@@ -11,7 +11,18 @@ class AuthRepository extends FirebaseRepository {
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  Future<AccountModel> signinWithGoogle() async {
+  Future<Account> getAccount(String email) async {
+    final snap = await db.collection('users').doc(email).get();
+    final userdata = snap.data();
+
+    if (userdata?.containsKey('region') == null) {
+      userdata?['region'] = 'Киров (Кировская область)';
+    }
+
+    return Account(login: userdata?['nickname'], email: email, region: userdata?['region']);
+  }
+
+  Future<Account?> signinWithGoogle() async {
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
@@ -34,33 +45,33 @@ class AuthRepository extends FirebaseRepository {
       });
     }
 
-    await setPrefs('login', email?.split('@')[0]);
-
-    return AccountModel(login: email?.split('@')[0] as String, email: email as String);
-    
+    if (email != null) {
+      await setPrefs('login', email.split('@')[0]);
+      final Account account = await getAccount(email);
+      return account;
+    }
   }
 
-  Future<AccountModel?> signin(String email, String password) async {
+  Future<Account?> signin(String email, String password) async {
     try {
       final credential = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      
-      db.collection('users').doc(email).get().then(((snap) async {
-        final data = snap.data();
-        await setPrefs('login', data!['nickname']);
-        return AccountModel(login: data!['nickname'] as String, email: email);
-      }));
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-credential') {
         Fluttertoast.showToast(msg: 'Неверная почта или пароль');
       }
     }
 
+    final Account account = await getAccount(email);
+    await setPrefs('login', account.login);
+
+    return account;
   }
 
-  Future<AccountModel> signup(String login, String email, String password) async {
+  Future<Account> signup(String login, String email, String password) async {
     try {
       final credential = auth.createUserWithEmailAndPassword(
         email: email,
@@ -72,7 +83,7 @@ class AuthRepository extends FirebaseRepository {
         'nickname': login,
         'favPlaces': []
       });
-      await setPrefs('login', login);
+  
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         Fluttertoast.showToast(msg: 'Этот пользователь уже существует');
@@ -81,7 +92,10 @@ class AuthRepository extends FirebaseRepository {
       print(e);
     }
 
-    return AccountModel(login: login, email: email);
+    final Account account = await getAccount(email);
+    await setPrefs('login', account.login);
+
+    return account;
   }
 
 }

@@ -1,6 +1,7 @@
-class AccountModel {
+class Account {
   final String login;
   final String email;
+  final String region;
 
-  const AccountModel({required this.login, required this.email});
+  const Account({required this.login, required this.email, required this.region});
 }

@@ -20,6 +20,9 @@ dependencies:
   fluttertoast: ^8.2.8
   google_sign_in: ^6.2.2
   get_it: ^8.0.3
+  provider: ^6.1.2
+  flutter_bloc: ^9.0.0
+  equatable: ^2.0.7
   # geolocator: ^13.0.2
 
 dev_dependencies:

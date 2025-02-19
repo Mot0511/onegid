@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:onegid/features/profile/widgets/appbar_widget.dart';
+import 'package:get_it/get_it.dart';
+import 'package:onegid/features/auth/auth.dart';
+import 'package:onegid/features/auth/bloc/bloc.dart';
+import 'package:onegid/features/auth/bloc/states.dart';
+import 'package:onegid/features/auth/widgets/appbar_widget.dart';
 import 'package:onegid/utils/prefs.dart';
 
 class ProfileView extends StatefulWidget {
@@ -10,6 +14,8 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+
+  final UserBloc userBloc = UserBloc(GetIt.I<AuthRepository>());
 
   String login = 'Mot0511';
 
@@ -39,20 +45,8 @@ class _ProfileViewState extends State<ProfileView> {
           AppBarWidget(),
           SizedBox(height: 20),
           Center(
-            child: Column(
-              children: [
-                Image.asset('assets/images/profile_image.png', width: 100, height: 100),
-                SizedBox(height: 20),
-                Text(login, style: theme.textTheme.titleLarge),
-                SizedBox(height: 5),
-                InkWell(
-                  child: Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Text('Выйти из аккаунта', style: theme.textTheme.titleMedium)
-                  ),
-                  onTap: () => signout(context)
-                )
-              ],
+            child: BlocBuilder<UserBloc, UserState>(
+
             )
           ),
         ],

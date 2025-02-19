@@ -5,7 +5,6 @@ import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/features/auth/auth.dart';
 import 'package:onegid/features/map/map.dart';
 import 'package:onegid/features/posts/repositories/posts_repository.dart';
-import 'package:onegid/services/fetchPosts.dart';
 import 'package:onegid/utils/prefs.dart';
 import 'package:onegid/features/posts/models/models.dart' as model;
 
@@ -47,7 +46,6 @@ class Home_ extends State<Home> {
   @override
   Widget build(BuildContext context) {
     getLogin(context);
-    final AccountModel? account = ModalRoute.of(context)!.settings.arguments as AccountModel?;
     final theme = Theme.of(context);
     // if (account != null) {
     //   Navigator.pushNamed(context, '/signin');

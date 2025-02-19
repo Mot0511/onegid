@@ -91,8 +91,8 @@ class Signin extends StatelessWidget{
                           ),
                           child: InkWell(
                             onTap: () async {
-                              AccountModel account = await authRepository.signinWithGoogle();
-                              Navigator.pushNamed(context, '/', arguments: account);
+                              await authRepository.signinWithGoogle();
+                              Navigator.pushNamed(context, '/');
                             },
                             child: Center(
                               child: Image.asset('assets/images/google.png'),
@@ -101,8 +101,8 @@ class Signin extends StatelessWidget{
                         ),
                         ElevatedButton(
                           onPressed: () async {
-                            AccountModel? account = await authRepository.signin(email.text, password.text);
-                            Navigator.pushNamed(context, '/', arguments: account);
+                            await authRepository.signin(email.text, password.text);
+                            Navigator.pushNamed(context, '/');
                           },
                           child: const Text('ВОЙТИ'),
                           

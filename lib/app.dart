@@ -3,11 +3,12 @@ import 'package:onegid/features/auth/auth.dart';
 import 'package:onegid/features/map/map.dart';
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/features/home/home.dart';
-import 'package:onegid/features/profile/profile.dart';
 import 'package:onegid/features/settings/settings.dart';
 import 'package:onegid/themes/dark.dart';
+import 'package:onegid/themes/provider.dart';
 import 'package:onegid/utils/prefs.dart';
 import 'package:onegid/themes/light.dart';
+import 'package:provider/provider.dart';
 
 class OneGid extends StatefulWidget {
   const OneGid({super.key});
@@ -19,12 +20,13 @@ class OneGid extends StatefulWidget {
 class OneGid_ extends State<OneGid>{
   OneGid_();
 
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       darkTheme: darkTheme,
       theme: ligthTheme,
-      themeMode: ThemeMode.system,
+      themeMode: Provider.of<ThemeProvider>(context).mode,
       initialRoute: '/addPost',
       routes: {
         '/': (context) => Home(),

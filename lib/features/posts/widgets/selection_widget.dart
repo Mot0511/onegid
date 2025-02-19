@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:onegid/features/posts/repositories/posts_repository.dart';
-import 'package:onegid/services/fetchCategories.dart';
 import 'package:onegid/features/posts/posts.dart';
 
 class Selection extends StatefulWidget{

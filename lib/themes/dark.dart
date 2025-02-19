@@ -18,6 +18,7 @@ final darkTheme = ThemeData(
   primaryColor: primaryColor,
   canvasColor: const Color.fromARGB(255, 35, 35, 35),
   scaffoldBackgroundColor: Colors.black,
+  textTheme: textTheme,
   progressIndicatorTheme: ProgressIndicatorThemeData(color: primaryColor),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
@@ -30,5 +31,8 @@ final darkTheme = ThemeData(
     labelStyle: textTheme.labelMedium,
     focusColor: Colors.white
   ),
-  textTheme: textTheme
+  switchTheme: SwitchThemeData(
+    thumbColor: WidgetStateProperty.all<Color?>(Colors.white),
+    trackColor: WidgetStateProperty.all<Color?>(Color.fromARGB(255, 35, 35, 35)),
+  )
 );
