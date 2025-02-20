@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:onegid/features/auth/auth.dart';
 import 'package:onegid/features/auth/bloc/bloc.dart';
@@ -16,21 +17,7 @@ class ProfileView extends StatefulWidget {
 
 class _ProfileViewState extends State<ProfileView> {
 
-  final UserBloc userBloc = UserBloc(GetIt.I<AuthRepository>());
-
-  String login = 'Mot0511';
-
-  void getLogin() async {
-    final login_ = await getPrefs('login');
-    if (login_ != null){
-      login = login_;
-    }
-    setState(() {});
-  }
-
-  void initState() {
-    getLogin();
-  }
+  final UserBloc userBloc = GetIt.I<UserBloc>();
 
   void signout(BuildContext context) async {
     await removePrefs('login');
@@ -48,7 +35,26 @@ class _ProfileViewState extends State<ProfileView> {
           Center(
             child: BlocBuilder<UserBloc, UserState>(
               builder: (context, state) {
-                return Container();
+                if (state is UserStateLoaded) {
+                  return Column(
+                    children: [
+                      Image.asset('assets/images/profile_image.png', width: 100, height: 100),
+                      const SizedBox(height: 20),
+                      Text(state.account.login, style: theme.textTheme.titleLarge),
+                      const SizedBox(height: 5),
+                      InkWell(
+                        child: Padding(
+                          padding: EdgeInsets.all(5),
+                          child: Text('Выйти из аккаунта', style: theme.textTheme.titleMedium)
+                        ),
+                        onTap: () => signout(context)
+                      )
+                    ],
+                  );
+                } else if (state is UserStateError) {
+                  Fluttertoast.showToast(msg: 'При загрузке данных пользователя произошла ошибка');
+                }
+                return const CircularProgressIndicator();
               },
             )
           ),

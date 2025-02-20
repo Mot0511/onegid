@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
+import 'package:onegid/features/auth/bloc/bloc.dart';
+import 'package:onegid/features/auth/bloc/events.dart';
+import 'package:onegid/features/auth/bloc/states.dart';
 import 'package:onegid/features/home/home.dart';
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/features/auth/auth.dart';
@@ -18,8 +23,8 @@ class Home_ extends State<Home> {
   Home_();
 
   final PostsRepository posts_repository = GetIt.I<PostsRepository>();
-
-  String login = '';
+  final UserBloc userBloc = GetIt.I<UserBloc>();
+  
   List<model.PostModel>? posts;
 
   void getData() async {
@@ -32,12 +37,10 @@ class Home_ extends State<Home> {
     getData();
   }
 
-  void getLogin(context) async {
-    final String? res = await getPrefs('login');
-    if (res != null) {
-      setState(() {
-        login = (res as String);
-      });
+  void getAccount(context) async {
+    final String? email = await getPrefs('email');
+    if (email != null) {
+      userBloc.add(LoadUser(email: email));
     } else {
       Navigator.of(context).pushNamed('/signin');
     }
@@ -45,11 +48,9 @@ class Home_ extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    getLogin(context);
+    getAccount(context);
     final theme = Theme.of(context);
-    // if (account != null) {
-    //   Navigator.pushNamed(context, '/signin');
-    // }
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(10),
@@ -96,13 +97,26 @@ class Home_ extends State<Home> {
                     end: Alignment.bottomRight                    
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                  child: Column(
-                    children: [
-                      Text('Хороший день для прогулки, $login!', style: TextStyle(color: Colors.white, fontSize: 25)),
-                    ],
-                  )
+                child: BlocBuilder<UserBloc, UserState>(
+                  bloc: userBloc,
+                  builder: (context, state) {
+                    if (state is UserStateLoaded) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                        child: Column(
+                          children: [
+                            Text('Хороший день для прогулки, ${state.account.login}!', style: TextStyle(color: Colors.white, fontSize: 25)),
+                          ],
+                        )
+                      );
+                    } else if (state is UserStateError) {
+                      Fluttertoast.showToast(msg: 'Произошла ошибка');
+                    } 
+                    return const Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Center(child: CircularProgressIndicator())
+                    );
+                  },
                 )
               ),
               Padding(

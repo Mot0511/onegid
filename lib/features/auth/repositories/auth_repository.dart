@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:onegid/features/auth/bloc/bloc.dart';
+import 'package:onegid/features/auth/bloc/events.dart';
 import 'package:onegid/features/auth/models/models.dart';
 import 'package:onegid/repositories/base_repository.dart';
 import 'package:onegid/utils/prefs.dart';
@@ -11,18 +14,23 @@ class AuthRepository extends FirebaseRepository {
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  Future<Account> getAccount(String email) async {
+  Future<Account?> getAccount(String email) async {
     final snap = await db.collection('users').doc(email).get();
     final userdata = snap.data();
 
-    if (userdata?.containsKey('region') == null) {
-      userdata?['region'] = 'Киров (Кировская область)';
+    if (userdata != null) {
+      if (userdata.containsKey('region')) {
+        userdata['region'] = 'Киров (Кировская область)';
+      }
+      return Account(
+        login: userdata['nickname'], 
+        email: email, 
+        region: userdata['region']
+      );
     }
-
-    return Account(login: userdata?['nickname'], email: email, region: userdata?['region']);
   }
 
-  Future<Account?> signinWithGoogle() async {
+  Future<void> signinWithGoogle() async {
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
@@ -35,7 +43,6 @@ class AuthRepository extends FirebaseRepository {
     final userCredential = await auth.signInWithCredential(credential);
     final email = userCredential.user?.email;
 
-    final db = FirebaseFirestore.instance;
     final docRef =  db.collection('users').doc(email);
     final userdata = await docRef.get();
     if (userdata.data() == null) {
@@ -46,9 +53,9 @@ class AuthRepository extends FirebaseRepository {
     }
 
     if (email != null) {
-      await setPrefs('login', email.split('@')[0]);
-      final Account account = await getAccount(email);
-      return account;
+      await setPrefs('email', email);
+    } else {
+      Fluttertoast.showToast(msg: 'Произошла ошибка');
     }
   }
 
@@ -65,19 +72,15 @@ class AuthRepository extends FirebaseRepository {
       }
     }
 
-    final Account account = await getAccount(email);
-    await setPrefs('login', account.login);
-
-    return account;
+    await setPrefs('email', email);
   }
 
-  Future<Account> signup(String login, String email, String password) async {
+  Future<void> signup(String login, String email, String password) async {
     try {
       final credential = auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      final db = FirebaseFirestore.instance;
       db.collection('users').doc(email).set({
         'email': email,
         'nickname': login,
@@ -92,10 +95,7 @@ class AuthRepository extends FirebaseRepository {
       print(e);
     }
 
-    final Account account = await getAccount(email);
-    await setPrefs('login', account.login);
-
-    return account;
+    await setPrefs('email', email);
   }
 
 }

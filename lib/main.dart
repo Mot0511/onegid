@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:onegid/app.dart';
+import 'package:onegid/features/auth/bloc/bloc.dart';
 import 'package:onegid/features/auth/repositories/auth_repository.dart';
 import 'package:onegid/features/posts/repositories/posts_repository.dart';
 import 'package:onegid/themes/provider.dart';
@@ -22,6 +23,8 @@ void main() async {
 
   GetIt.I.registerSingleton(AuthRepository());
   GetIt.I.registerSingleton(PostsRepository());
+
+  GetIt.I.registerSingleton(UserBloc(GetIt.I<AuthRepository>()));
 
   runApp(ChangeNotifierProvider<ThemeProvider>(
     create: (context) => ThemeProvider(),

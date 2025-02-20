@@ -27,7 +27,7 @@ class OneGid_ extends State<OneGid>{
       darkTheme: darkTheme,
       theme: ligthTheme,
       themeMode: Provider.of<ThemeProvider>(context).mode,
-      initialRoute: '/addPost',
+      initialRoute: '/',
       routes: {
         '/': (context) => Home(),
         '/map': (context) => MapScreen(),

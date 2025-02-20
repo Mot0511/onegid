@@ -12,8 +12,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         }
         
         final account = await authRepository.getAccount(event.email);
-        
-        emit(UserStateLoaded(account: account));
+        if (account != null) {
+          emit(UserStateLoaded(account: account));
+        }
       } on Exception catch (e) {
         emit(UserStateError(exception: e));
       }
