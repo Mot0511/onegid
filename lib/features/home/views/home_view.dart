@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,6 +8,9 @@ import 'package:onegid/features/auth/bloc/bloc.dart';
 import 'package:onegid/features/auth/bloc/events.dart';
 import 'package:onegid/features/auth/bloc/states.dart';
 import 'package:onegid/features/home/home.dart';
+import 'package:onegid/features/posts/bloc/bloc.dart';
+import 'package:onegid/features/posts/bloc/events.dart';
+import 'package:onegid/features/posts/bloc/states.dart';
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/features/auth/auth.dart';
 import 'package:onegid/features/map/map.dart';
@@ -23,18 +28,13 @@ class Home_ extends State<Home> {
   Home_();
 
   final PostsRepository posts_repository = GetIt.I<PostsRepository>();
+
   final UserBloc userBloc = GetIt.I<UserBloc>();
+  final PostsBloc postsBloc = GetIt.I<PostsBloc>();
   
-  List<model.PostModel>? posts;
-
-  void getData() async {
-    posts = await posts_repository.getPosts();
-    setState(() {});
-  }
-
   @override
   void initState() {
-    getData();
+    postsBloc.add(LoadPosts());
   }
 
   void getAccount(context) async {
@@ -56,7 +56,9 @@ class Home_ extends State<Home> {
         padding: EdgeInsets.all(10),
         child: RefreshIndicator(
           onRefresh: () async {
-            return getData();
+            final completer = Completer();
+            postsBloc.add(LoadPosts(completer: completer));
+            return completer.future;
           },
           child: ListView(
             children: [
@@ -110,7 +112,7 @@ class Home_ extends State<Home> {
                         )
                       );
                     } else if (state is UserStateError) {
-                      Fluttertoast.showToast(msg: 'Произошла ошибка');
+                      Fluttertoast.showToast(msg: 'При загрузке данных пользователя произошла ошибка');
                     } 
                     return const Padding(
                       padding: EdgeInsets.all(20),
@@ -128,14 +130,18 @@ class Home_ extends State<Home> {
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 2),
-                child: posts == null ?
-                  const Center(child: CircularProgressIndicator()) :
-                  Builder(builder: (BuildContext context) {
-                    List<Widget> children = [];
-                    posts?.forEach((model.PostModel post) {
-                      children.add(PostWidget(post: post));
-                    });
-                    return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: children));
+                child: BlocBuilder<PostsBloc, PostsState>(
+                  bloc: postsBloc,
+                  builder: (context, state) {
+                    if (state is PostsStateLoaded) {
+                      List<Widget> children = state.posts.map((model.PostModel post) {
+                        return PostWidget(post: post);
+                      }).toList();
+                      return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: children));
+                    } else if (state is PostsStateError) {
+                      Fluttertoast.showToast(msg: 'При загрузке постов произошла ошибка');
+                    } 
+                    return const Center(child: CircularProgressIndicator());
                   })
               ),
               Padding(

@@ -1,7 +1,10 @@
+import 'package:onegid/features/map/map.dart';
+
 class Account {
   final String login;
   final String email;
-  final String region;
+  String region;
+  List<Place> favPlaces;
 
-  const Account({required this.login, required this.email, required this.region});
+  Account({required this.login, required this.email, required this.region, required this.favPlaces});
 }

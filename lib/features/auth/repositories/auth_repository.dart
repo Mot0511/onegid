@@ -6,26 +6,49 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:onegid/features/auth/bloc/bloc.dart';
 import 'package:onegid/features/auth/bloc/events.dart';
+import 'package:onegid/features/auth/bloc/states.dart';
 import 'package:onegid/features/auth/models/models.dart';
+import 'package:onegid/features/map/map.dart';
 import 'package:onegid/repositories/base_repository.dart';
 import 'package:onegid/utils/prefs.dart';
+import 'package:yandex_maps_mapkit/mapkit.dart';
 
 class AuthRepository extends FirebaseRepository {
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  
+  Future<void> changeRegion(String email, String newRegion) async {
+    db.collection('users').doc(email).update(
+      {
+        'region': newRegion
+      }
+    );
+  }
 
   Future<Account?> getAccount(String email) async {
     final snap = await db.collection('users').doc(email).get();
     final userdata = snap.data();
 
     if (userdata != null) {
-      if (userdata.containsKey('region')) {
+      if (!userdata.containsKey('region')) {
         userdata['region'] = 'Киров (Кировская область)';
       }
+
+      final List<Place> places = [];
+      if (userdata.containsKey('favPlaces')) {
+        for (var place in userdata['favPlaces']) {
+          places.add(Place(
+            title: place['title'], 
+            position: Point(latitude: place['coordinates'][0], longitude: place['coordinates'][1])
+          ));
+        }
+      }
+
       return Account(
         login: userdata['nickname'], 
         email: email, 
-        region: userdata['region']
+        region: userdata['region'],
+        favPlaces: places
       );
     }
   }

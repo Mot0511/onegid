@@ -11,3 +11,12 @@ class LoadUser extends UserEvent {
   @override
   List get props => [];
 }
+
+class ChangeRegion extends UserEvent {
+  final String newRegion;
+
+  ChangeRegion({required this.newRegion});
+
+  @override
+  List get props => [];
+}

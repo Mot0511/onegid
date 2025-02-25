@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:onegid/app.dart';
 import 'package:onegid/features/auth/bloc/bloc.dart';
 import 'package:onegid/features/auth/repositories/auth_repository.dart';
+import 'package:onegid/features/posts/bloc/bloc.dart';
 import 'package:onegid/features/posts/repositories/posts_repository.dart';
 import 'package:onegid/themes/provider.dart';
 import 'package:yandex_maps_mapkit/init.dart' as init;
@@ -24,11 +25,12 @@ void main() async {
   GetIt.I.registerSingleton(AuthRepository());
   GetIt.I.registerSingleton(PostsRepository());
 
-  GetIt.I.registerSingleton(UserBloc(GetIt.I<AuthRepository>()));
+  GetIt.I.registerSingleton(UserBloc(authRepository: GetIt.I<AuthRepository>()));
+  GetIt.I.registerSingleton(PostsBloc(postsRepository: GetIt.I<PostsRepository>()));
 
   runApp(ChangeNotifierProvider<ThemeProvider>(
     create: (context) => ThemeProvider(),
-    child: OneGid()
+    builder: (context, child) => OneGid(),
   )
   );
 }

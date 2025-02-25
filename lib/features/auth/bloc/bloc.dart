@@ -4,7 +4,7 @@ import 'package:onegid/features/auth/bloc/events.dart';
 import 'package:onegid/features/auth/bloc/states.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  UserBloc(this.authRepository) : super(UserStateInitial()) {
+  UserBloc({required this.authRepository}) : super(UserStateInitial()) {
     on<LoadUser>((event, emit) async {
       try {
         if (state is! UserStateLoaded) {
@@ -17,6 +17,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         }
       } on Exception catch (e) {
         emit(UserStateError(exception: e));
+      }
+    });
+    on<ChangeRegion>((event, emit) async {
+      if (state is UserStateLoaded) {
+        final account = (state as UserStateLoaded).account;
+        emit(UserStateInitial());
+        account.region = event.newRegion;
+        emit(UserStateLoaded(account: account));
+        authRepository.changeRegion(account.email, event.newRegion);
       }
     });
   }

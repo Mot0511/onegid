@@ -8,6 +8,7 @@ final textTheme = TextTheme(
   titleLarge: TextStyle(fontSize: 25),
   titleMedium: TextStyle(fontSize: 18),
   titleSmall: TextStyle(fontSize: 15, color: Colors.white),
+  labelLarge: TextStyle(fontSize: 24),
   labelMedium: TextStyle(color: primaryColor),
   labelSmall: TextStyle(fontSize: 10, color: primaryColor)
 );

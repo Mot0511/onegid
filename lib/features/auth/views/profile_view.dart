@@ -6,6 +6,8 @@ import 'package:onegid/features/auth/auth.dart';
 import 'package:onegid/features/auth/bloc/bloc.dart';
 import 'package:onegid/features/auth/bloc/states.dart';
 import 'package:onegid/features/auth/widgets/appbar_widget.dart';
+import 'package:onegid/features/map/map.dart';
+import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/utils/prefs.dart';
 
 class ProfileView extends StatefulWidget {
@@ -34,6 +36,7 @@ class _ProfileViewState extends State<ProfileView> {
           SizedBox(height: 20),
           Center(
             child: BlocBuilder<UserBloc, UserState>(
+              bloc: userBloc,
               builder: (context, state) {
                 if (state is UserStateLoaded) {
                   return Column(
@@ -48,7 +51,7 @@ class _ProfileViewState extends State<ProfileView> {
                           child: Text('Выйти из аккаунта', style: theme.textTheme.titleMedium)
                         ),
                         onTap: () => signout(context)
-                      )
+                      ),
                     ],
                   );
                 } else if (state is UserStateError) {
@@ -58,6 +61,49 @@ class _ProfileViewState extends State<ProfileView> {
               },
             )
           ),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: theme.primaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Промокоды за\nактивность', style: theme.textTheme.labelLarge?.copyWith(color: Colors.white)),
+                      GestureDetector(
+                        child: Icon(Icons.chevron_right, color: Colors.white, size: 50)
+                      )
+                    ],
+                  )
+                ),
+                SizedBox(height: 30),
+                Text('Мои посты:', style: theme.textTheme.titleLarge),
+                SizedBox(height: 30),
+                Text('Избранные места:', style: theme.textTheme.titleLarge),
+                SizedBox(height: 10),
+                BlocBuilder(
+                  bloc: userBloc,
+                  builder: (context, state) {
+                    if (state is UserStateLoaded) {
+                      return Column(
+                        children: state.account.favPlaces.map((place) {
+                          return PlaceItem(place: place);
+                        }).toList(),
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
+                  }
+                )
+              ],
+            )
+          )
         ],
       )
     );

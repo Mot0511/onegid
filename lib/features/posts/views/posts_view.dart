@@ -1,5 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
+import 'package:onegid/features/posts/bloc/bloc.dart';
+import 'package:onegid/features/posts/bloc/events.dart';
+import 'package:onegid/features/posts/bloc/states.dart';
 import 'package:onegid/features/posts/models/models.dart' as model;
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/features/posts/repositories/posts_repository.dart';
@@ -15,18 +22,8 @@ class Posts extends StatefulWidget{
 class _PostsState extends State<Posts> {
 
   final PostsRepository posts_repository = GetIt.I<PostsRepository>();
-
-  List<model.PostModel>? posts;
   
-  void getData() async {
-    posts = await posts_repository.getPosts();
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    getData();
-  }
+  final PostsBloc postsBloc = GetIt.I<PostsBloc>();
 
   @override
   Widget build(BuildContext context){
@@ -35,7 +32,9 @@ class _PostsState extends State<Posts> {
       floatingActionButton: const AddBtnWidget(path: 'addPost'),
       body: RefreshIndicator(
         onRefresh: () async {
-          return getData();
+          final completer = Completer();
+          postsBloc.add(LoadPosts(completer: completer));
+          return completer.future;
         },
         child: ListView(
           children: [
@@ -62,15 +61,20 @@ class _PostsState extends State<Posts> {
             ),
             Expanded(
               flex: 9,
-              child: posts == null ?
-                const Center(child: CircularProgressIndicator()) :
-                Builder(builder: (BuildContext context) {
-                  final List<PostWidget> children = [];
-                  posts?.forEach((model.PostModel post) {
-                    children.add(PostWidget(post: post));
-                  });
-                  return Selection(children: children);
-                })
+              child: BlocBuilder<PostsBloc, PostsState>(
+                bloc: postsBloc,
+                builder: (context, state) {
+                  if (state is PostsStateLoaded) {
+                    final List<PostWidget> children = state.posts.map((model.PostModel post) {
+                      return PostWidget(post: post);
+                    }).toList();
+                    return Selection(children: children);
+                  } else if (state is PostsStateError) {
+                    Fluttertoast.showToast(msg: 'При загрузке постов произошла ошибка');
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                }
+              )
             )
           ],
         ),
