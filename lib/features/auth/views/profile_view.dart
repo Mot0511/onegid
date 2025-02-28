@@ -7,6 +7,8 @@ import 'package:onegid/features/auth/bloc/bloc.dart';
 import 'package:onegid/features/auth/bloc/states.dart';
 import 'package:onegid/features/auth/widgets/appbar_widget.dart';
 import 'package:onegid/features/map/map.dart';
+import 'package:onegid/features/posts/bloc/bloc.dart';
+import 'package:onegid/features/posts/bloc/states.dart';
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/utils/prefs.dart';
 
@@ -20,6 +22,7 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
 
   final UserBloc userBloc = GetIt.I<UserBloc>();
+  final PostsBloc postsBloc = GetIt.I<PostsBloc>();
 
   void signout(BuildContext context) async {
     await removePrefs('login');
@@ -66,24 +69,45 @@ class _ProfileViewState extends State<ProfileView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: theme.primaryColor,
-                    borderRadius: BorderRadius.circular(20),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pushNamed('/promocodes'),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: theme.primaryColor,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: EdgeInsets.all(20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Промокоды за\nактивность', style: theme.textTheme.labelLarge?.copyWith(color: Colors.white)),
+                        GestureDetector(
+                          child: Icon(Icons.chevron_right, color: Colors.white, size: 50)
+                        )
+                      ],
+                    )
                   ),
-                  padding: EdgeInsets.all(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Промокоды за\nактивность', style: theme.textTheme.labelLarge?.copyWith(color: Colors.white)),
-                      GestureDetector(
-                        child: Icon(Icons.chevron_right, color: Colors.white, size: 50)
-                      )
-                    ],
-                  )
                 ),
                 SizedBox(height: 30),
                 Text('Мои посты:', style: theme.textTheme.titleLarge),
+                SizedBox(height: 10),
+                BlocBuilder<PostsBloc, PostsState>(
+                  bloc: postsBloc,
+                  builder: (context, state) {
+                    if (state is PostsStateLoaded && userBloc.state is UserStateLoaded) {
+                      final List<Widget> children = [];
+                      for (var post in state.posts) {
+                        if (post.author == (userBloc.state as UserStateLoaded).account.login) {
+                          children.add(PostWidget(post: post));
+                        }
+                      }
+                      return Wrap(children: children);
+                    } else if (state is PostsStateError) {
+                      Fluttertoast.showToast(msg: 'При загрузке постов произошла ошибка');
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
                 SizedBox(height: 30),
                 Text('Избранные места:', style: theme.textTheme.titleLarge),
                 SizedBox(height: 10),

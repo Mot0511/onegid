@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:onegid/features/map/map.dart';
+import 'package:onegid/features/posts/models/category.dart';
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/repositories/base_repository.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart' as yandex_map;
@@ -44,13 +45,14 @@ class PostsRepository extends FirebaseRepository {
         places.add(Place(title: entry.key, position: yandex_map.Point(latitude: entry.value[0], longitude: entry.value[1])));
       }
 
-      final categories = await getCategories();
+      final List<Category> categories = await getCategories();
+      final String category = categories.where((category) => category.id == data['category']).toList()[0].id;
       final PostModel post = PostModel(
         title: data['title'],
         description: data['description'],
         author: data['author'],
         image: NetworkImage(imageUrl),
-        cat: (categories[data['category']] as String),
+        cat: category,
         catId: data['category'],
         places: places
       );
@@ -61,15 +63,15 @@ class PostsRepository extends FirebaseRepository {
   }
 
 
-  Future<Map<String, String>> getCategories() async {
-
-    final Map<String, String> categories = {};
+  Future<List<Category>> getCategories() async {
     final snap = await db.collection('categories').get();
-    for (var doc in snap.docs) {
-      final id = doc.id;
-      final data = doc.data(); 
-      categories[id] = data['title'];
-    }
+
+    final List<Category> categories = snap.docs.map((doc) {
+        final id = doc.id;
+        final data = doc.data(); 
+        return Category(id: id, title: data['title']);
+      }
+    ).toList();
 
     return categories;
   }

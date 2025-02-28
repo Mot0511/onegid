@@ -3,6 +3,7 @@ import 'package:onegid/features/auth/auth.dart';
 import 'package:onegid/features/map/map.dart';
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/features/home/home.dart';
+import 'package:onegid/features/promocodes/views/promocodes_view.dart';
 import 'package:onegid/features/settings/settings.dart';
 import 'package:onegid/themes/dark.dart';
 import 'package:onegid/themes/provider.dart';
@@ -37,6 +38,7 @@ class OneGid_ extends State<OneGid>{
         '/signup': (context) => Signup(),
         '/profile': (context) => ProfileView(),
         '/settings': (context) => SettingsView(),
+        '/promocodes': (context) => PromocodesView(),
       },
     );
   }

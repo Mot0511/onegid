@@ -31,6 +31,7 @@ class _PostsState extends State<Posts> {
     return Scaffold(
       floatingActionButton: const AddBtnWidget(path: 'addPost'),
       body: RefreshIndicator(
+        color: theme.primaryColor,
         onRefresh: () async {
           final completer = Completer();
           postsBloc.add(LoadPosts(completer: completer));
@@ -38,43 +39,35 @@ class _PostsState extends State<Posts> {
         },
         child: ListView(
           children: [
-            Expanded(
-              flex: 1,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Image.asset('assets/images/back_button_green.png', width: 50),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text('ИНТЕРЕСНЫЕ ПОСТЫ', style: theme.textTheme.headlineMedium)
-                      )
-                    ],
+            Container(
+              padding: const EdgeInsets.only(left: 10),
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Image.asset('assets/images/back_button_green.png', width: 50),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text('ИНТЕРЕСНЫЕ ПОСТЫ', style: theme.textTheme.headlineMedium)
                   )
-                )
-              ),
-            ),
-            Expanded(
-              flex: 9,
-              child: BlocBuilder<PostsBloc, PostsState>(
-                bloc: postsBloc,
-                builder: (context, state) {
-                  if (state is PostsStateLoaded) {
-                    final List<PostWidget> children = state.posts.map((model.PostModel post) {
-                      return PostWidget(post: post);
-                    }).toList();
-                    return Selection(children: children);
-                  } else if (state is PostsStateError) {
-                    Fluttertoast.showToast(msg: 'При загрузке постов произошла ошибка');
-                  }
-                  return const Center(child: CircularProgressIndicator());
-                }
+                ],
               )
+            ),
+            BlocBuilder<PostsBloc, PostsState>(
+              bloc: postsBloc,
+              builder: (context, state) {
+                if (state is PostsStateLoaded) {
+                  final List<PostWidget> children = state.posts.map((model.PostModel post) {
+                    return PostWidget(post: post);
+                  }).toList();
+                  return Selection(categories: state.categories, children: children);
+                } else if (state is PostsStateError) {
+                  Fluttertoast.showToast(msg: 'При загрузке постов произошла ошибка');
+                }
+                return const Center(child: CircularProgressIndicator());
+              }
             )
           ],
         ),

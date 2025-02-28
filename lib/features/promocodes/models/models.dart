@@ -1,0 +1,1 @@
+export 'promocode_model.dart';

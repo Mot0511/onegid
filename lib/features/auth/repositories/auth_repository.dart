@@ -34,6 +34,10 @@ class AuthRepository extends FirebaseRepository {
         userdata['region'] = 'Киров (Кировская область)';
       }
 
+      if (!userdata.containsKey('promocodes')) {
+        userdata['promocodes'] = [];
+      }
+
       final List<Place> places = [];
       if (userdata.containsKey('favPlaces')) {
         for (var place in userdata['favPlaces']) {
@@ -48,7 +52,8 @@ class AuthRepository extends FirebaseRepository {
         login: userdata['nickname'], 
         email: email, 
         region: userdata['region'],
-        favPlaces: places
+        favPlaces: places,
+        promocodes: userdata.containsKey('promocodes') ? userdata['promocodes'] : null
       );
     }
   }

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:onegid/features/auth/bloc/bloc.dart';
+import 'package:onegid/features/auth/bloc/states.dart';
 import 'package:onegid/features/map/map.dart';
+import 'package:onegid/features/posts/bloc/bloc.dart';
+import 'package:onegid/features/posts/bloc/states.dart';
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/features/posts/repositories/posts_repository.dart';
 import 'dart:io';
@@ -19,6 +24,9 @@ class _AddPost extends State<AddPost>{
 
   final PostsRepository posts_repository = GetIt.I<PostsRepository>();
 
+  final UserBloc userBloc = GetIt.I<UserBloc>();
+  final PostsBloc postsBloc = GetIt.I<PostsBloc>();
+
   String selectedCat = '0';
   Map<String, String>? categories;
   var imagePreview;
@@ -26,15 +34,6 @@ class _AddPost extends State<AddPost>{
 
   late final TextEditingController title = TextEditingController(text: '');
   late final TextEditingController description = TextEditingController(text: '');
-
-  void getData() async {
-    categories = await posts_repository.getCategories();
-    setState(() {});
-  }
-
-  void initState() {
-    getData();
-  }
 
   void pickImage() async {
     ImagePicker picker = ImagePicker();
@@ -55,17 +54,19 @@ class _AddPost extends State<AddPost>{
   }
 
   void addPost() async {
-    final PostModel post = PostModel(
-      title: title.text, 
-      description: description.text,
-      author: (await getPrefs('login') as String),
-      places: choosenPlaces, 
-      cat: selectedCat,
-      catId: selectedCat,
-      image: imagePreview,
-    );
-
-    await posts_repository.addPost(post);
+    if (userBloc.state is UserStateLoaded) {
+      final PostModel post = PostModel(
+        title: title.text, 
+        description: description.text,
+        author: (userBloc.state as UserStateLoaded).account.login,
+        places: choosenPlaces, 
+        cat: selectedCat,
+        catId: selectedCat,
+        image: imagePreview,
+      );
+      await posts_repository.addPost(post);
+    }
+    
   }
 
   @override
@@ -120,24 +121,26 @@ class _AddPost extends State<AddPost>{
             ),
             Field(
               heading: 'Выберите категорию поста',
-              widget: categories != null ?
-                Builder(builder: (BuildContext context) {
-                  final List<DropdownMenuItem<String>> children = [];
-                  categories?.forEach((key, value) {
-                    children.add(DropdownMenuItem(child: Text(value), value: key));
-                  });
-                  return DropdownButton(
-                    isExpanded: true,
-                    value: selectedCat,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedCat = (value as String);
-                      });
-                    },
-                    items: children,
-                  );
-                }
-              ) : const SizedBox.shrink()
+              widget: BlocBuilder<PostsBloc, PostsState>(
+                bloc: postsBloc,
+                builder: (context, state) {
+                  if (state is PostsStateLoaded) {
+                    final List<DropdownMenuItem<String>> children = state.categories.map((category) => DropdownMenuItem(child: Text(category.title), value: category.id)).toList();
+                    return DropdownButton(
+                      isExpanded: true,
+                      value: selectedCat,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedCat = (value as String);
+                        });
+                      },
+                      items: children,
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                } 
+              )
             ),
             Field(
               heading: 'О чем вы хотите рассказать',

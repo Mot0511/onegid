@@ -8,9 +8,10 @@ final textTheme = TextTheme(
   titleLarge: TextStyle(fontSize: 25, color: Colors.white),
   titleMedium: TextStyle(fontSize: 18, color: Colors.white),
   titleSmall: TextStyle(fontSize: 15, color: Colors.white),
-  labelLarge: TextStyle(fontSize: 24, color: Colors.white),
+  labelLarge: TextStyle(fontSize: 20, color: Colors.white),
   labelMedium: TextStyle(color: Colors.white),
-  labelSmall: TextStyle(fontSize: 10, color: primaryColor)
+  labelSmall: TextStyle(fontSize: 10, color: primaryColor),
+  bodyMedium: TextStyle(fontSize: 15, color: Colors.white)
 );
 
 
@@ -34,5 +35,6 @@ final darkTheme = ThemeData(
   switchTheme: SwitchThemeData(
     thumbColor: WidgetStateProperty.all<Color?>(Colors.white),
     trackColor: WidgetStateProperty.all<Color?>(Color.fromARGB(255, 35, 35, 35)),
-  )
+  ),
+  
 );

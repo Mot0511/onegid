@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:onegid/features/posts/bloc/bloc.dart';
+import 'package:onegid/features/posts/bloc/states.dart';
+import 'package:onegid/features/posts/models/category.dart';
 import 'package:onegid/features/posts/repositories/posts_repository.dart';
 import 'package:onegid/features/posts/posts.dart';
 
 class Selection extends StatefulWidget{
-  const Selection({super.key, required this.children});
+  const Selection({super.key, required this.children, required this.categories});
+  final List<Category> categories;
   final List<PostWidget> children;
 
   State<Selection> createState() => _Selection();
@@ -15,18 +20,10 @@ class _Selection extends State<Selection>{
 
   final PostsRepository posts_repository = GetIt.I<PostsRepository>();
 
+  final PostsBloc postsBloc = GetIt.I<PostsBloc>();
+
   Map<String, String>? categories;
   String selectedCat = '0';
-
-  void getData() async {
-    categories = await posts_repository.getCategories();
-    setState(() {});
-  }
- 
-  @override
-  void initState() {
-    getData();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +33,18 @@ class _Selection extends State<Selection>{
           padding: EdgeInsets.symmetric(vertical: 10),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: categories == null ?
-              SizedBox.shrink() :
-              Builder(builder: (BuildContext context) {
-                final List<Widget> children = [];
-                categories?.forEach((key, value) {
-                  children.add(CatItem(title: value, value: key, selectedCat: selectedCat, onClick: () => setState(() => selectedCat = key)));
-                });
-                return Row(children: children);
-              })
-        
+            child: BlocBuilder<PostsBloc, PostsState>(
+              bloc: postsBloc,
+              builder: (context, state) {
+                if (state is PostsStateLoaded) {
+                  final List<Widget> children = state.categories.map((category) => 
+                    CatItem(title: category.title, value: category.id, selectedCat: selectedCat, onClick: () => setState(() => selectedCat = category.id))
+                  ).toList();
+                  return Row(children: children);
+                } else {
+                  return const SizedBox.shrink();
+                }
+            })
           ),
         ),
         Builder(

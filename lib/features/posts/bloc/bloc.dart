@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onegid/features/posts/bloc/events.dart';
 import 'package:onegid/features/posts/bloc/states.dart';
+import 'package:onegid/features/posts/models/category.dart';
 import 'package:onegid/features/posts/models/models.dart';
 import 'package:onegid/features/posts/repositories/posts_repository.dart';
 
@@ -12,7 +13,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       }
       try {
         final List<PostModel> posts = await postsRepository.getPosts();
-        emit(PostsStateLoaded(posts: posts));
+        final List<Category> categories = await postsRepository.getCategories();
+        emit(PostsStateLoaded(posts: posts, categories: categories));
       } catch (e) {
         emit(PostsStateError(exception: e));
       } finally  {

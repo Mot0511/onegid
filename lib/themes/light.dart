@@ -7,7 +7,7 @@ final textTheme = TextTheme(
   headlineMedium: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
   titleLarge: TextStyle(fontSize: 25),
   titleMedium: TextStyle(fontSize: 18),
-  titleSmall: TextStyle(fontSize: 15, color: Colors.white),
+  titleSmall: TextStyle(fontSize: 15),
   labelLarge: TextStyle(fontSize: 24),
   labelMedium: TextStyle(color: primaryColor),
   labelSmall: TextStyle(fontSize: 10, color: primaryColor)
@@ -22,5 +22,6 @@ final ligthTheme = ThemeData(
       foregroundColor: WidgetStateProperty.all<Color>(Color.fromARGB(255, 255, 255, 255)),
     ),
   ),
-  textTheme: textTheme
+  textTheme: textTheme,
+  canvasColor: const Color.fromARGB(255, 206, 206, 206)
 );

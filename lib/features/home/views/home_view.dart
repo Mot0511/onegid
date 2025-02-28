@@ -29,6 +29,7 @@ class Home_ extends State<Home> {
 
   final PostsRepository posts_repository = GetIt.I<PostsRepository>();
 
+
   final UserBloc userBloc = GetIt.I<UserBloc>();
   final PostsBloc postsBloc = GetIt.I<PostsBloc>();
   
@@ -55,6 +56,7 @@ class Home_ extends State<Home> {
       body: Padding(
         padding: EdgeInsets.all(10),
         child: RefreshIndicator(
+          color: theme.primaryColor,
           onRefresh: () async {
             final completer = Completer();
             postsBloc.add(LoadPosts(completer: completer));
@@ -75,6 +77,7 @@ class Home_ extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
+                        onTap: () => Navigator.of(context).pushNamed('/promocodes'),
                         child: Image.asset('assets/images/main_menu/bonuses.png', width: 50, height: 50)
                       ),
                       InkWell(
@@ -113,6 +116,7 @@ class Home_ extends State<Home> {
                       );
                     } else if (state is UserStateError) {
                       Fluttertoast.showToast(msg: 'При загрузке данных пользователя произошла ошибка');
+                      
                     } 
                     return const Padding(
                       padding: EdgeInsets.all(20),
@@ -134,9 +138,14 @@ class Home_ extends State<Home> {
                   bloc: postsBloc,
                   builder: (context, state) {
                     if (state is PostsStateLoaded) {
-                      List<Widget> children = state.posts.map((model.PostModel post) {
-                        return PostWidget(post: post);
-                      }).toList();
+                      List<Widget> children = [];
+                      if (state.posts.length > 5) {
+                        for (var i = 1; i <= 5; i++) {
+                          children.add(PostWidget(post: state.posts[state.posts.length - i]));
+                        }
+                      } else {
+                        children = state.posts.map((model.PostModel post) => PostWidget(post: post)).toList();
+                      }
                       return SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: children));
                     } else if (state is PostsStateError) {
                       Fluttertoast.showToast(msg: 'При загрузке постов произошла ошибка');

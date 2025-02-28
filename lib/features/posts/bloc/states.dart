@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:onegid/features/posts/models/category.dart';
 import 'package:onegid/features/posts/models/models.dart';
 
 abstract class PostsState extends Equatable {}
@@ -15,8 +16,9 @@ class PostsStateLoading extends PostsState {
 
 class PostsStateLoaded extends PostsState {
   final List<PostModel> posts;
+  final List<Category> categories;
 
-  PostsStateLoaded({required this.posts});
+  PostsStateLoaded({required this.posts, required this.categories});
 
   @override
   List get props => [posts];
