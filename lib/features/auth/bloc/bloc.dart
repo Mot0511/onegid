@@ -19,6 +19,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         emit(UserStateError(exception: e));
       }
     });
+
     on<ChangeRegion>((event, emit) async {
       if (state is UserStateLoaded) {
         final account = (state as UserStateLoaded).account;
@@ -28,6 +29,27 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         authRepository.changeRegion(account.email, event.newRegion);
       }
     });
+
+    on<AddFavPlace>((event, emit) async {
+      if (state is UserStateLoaded) {
+        final account = (state as UserStateLoaded).account;
+        emit(UserStateInitial());
+        account.favPlaces.add(event.newPlace);
+        emit(UserStateLoaded(account: account));
+        await authRepository.addFavPlace(account.email, event.newPlace);
+      }
+    });
+
+    on<RemoveFavPlace>((event, emit) async {
+      if (state is UserStateLoaded) {
+        final account = (state as UserStateLoaded).account;
+        emit(UserStateInitial());
+        account.favPlaces.remove(event.place);
+        emit(UserStateLoaded(account: account));
+        await authRepository.removeFavPlace(account.email, event.place);
+      }
+    });
+
   }
 
   final AuthRepository authRepository;

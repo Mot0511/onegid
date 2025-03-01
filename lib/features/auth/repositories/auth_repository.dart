@@ -16,6 +16,36 @@ import 'package:yandex_maps_mapkit/mapkit.dart';
 class AuthRepository extends FirebaseRepository {
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  Future<void> addFavPlace(String email, Place newPlace) async {
+
+    final place = {
+      'title': newPlace.title,
+      'position': [newPlace.position.latitude, newPlace.position.longitude],
+      'uri': newPlace.uri
+    };
+
+    db.collection('users').doc(email).update(
+      {
+        'favPlaces': FieldValue.arrayUnion([place])
+      }
+    );
+  }
+
+  Future<void> removeFavPlace(String email, Place removedPlace) async {
+
+    final place = {
+      'title': removedPlace.title,
+      'position': [removedPlace.position.latitude, removedPlace.position.longitude],
+      'uri': removedPlace.uri
+    };
+
+    db.collection('users').doc(email).update(
+      {
+        'favPlaces': FieldValue.arrayRemove([place])
+      }
+    );
+  }
   
   Future<void> changeRegion(String email, String newRegion) async {
     db.collection('users').doc(email).update(
@@ -43,7 +73,9 @@ class AuthRepository extends FirebaseRepository {
         for (var place in userdata['favPlaces']) {
           places.add(Place(
             title: place['title'], 
-            position: Point(latitude: place['coordinates'][0], longitude: place['coordinates'][1])
+            position: Point(latitude: place['position'][0], longitude: place['position'][1],
+            ),
+            uri: place['uri']
           ));
         }
       }

@@ -42,7 +42,7 @@ class PostsRepository extends FirebaseRepository {
       final String imageUrl = await getFireUrl('posts/$id/photo0');
       final List<Place> places = [];
       for (var entry in data['points'].entries) {
-        places.add(Place(title: entry.key, position: yandex_map.Point(latitude: entry.value[0], longitude: entry.value[1])));
+        places.add(Place(title: entry.key, position: yandex_map.Point(latitude: entry.value[0], longitude: entry.value[1]), uri: ''));
       }
 
       final List<Category> categories = await getCategories();
