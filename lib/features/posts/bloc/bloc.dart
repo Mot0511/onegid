@@ -12,7 +12,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         emit(PostsStateLoading());
       }
       try {
-        final List<PostModel> posts = await postsRepository.getPosts();
+        final List<PostModel> posts = await postsRepository.getPosts(event.email);
         final List<Category> categories = await postsRepository.getCategories();
         emit(PostsStateLoaded(posts: posts, categories: categories));
       } catch (e) {

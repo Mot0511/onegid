@@ -8,6 +8,7 @@ class PostModel {
   final String cat;
   final String catId;
   final List<Place> places;
+  final String? region;
 
-  const PostModel({required this.title, required this.description, required this.image, required this.cat, required this.catId, required this.author, required this.places});
+  const PostModel({required this.title, required this.description, required this.image, required this.cat, required this.catId, required this.author, required this.places, this.region});
 }

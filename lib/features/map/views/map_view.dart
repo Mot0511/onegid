@@ -149,95 +149,13 @@ class _MapScreen extends State<MapScreen>{
                     onSubmitted: search,
                   )
                 ),
-                if (mapArguments.mode == MapMode.choosePlaces)
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 5,
-                        child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Column(
-                            children: List.generate(choosenPlaces.length, (i) => Padding(
-                              padding: EdgeInsets.only(bottom: 10),
-                              child: Text(choosenPlaces[i]!.title)
-                            ))
-                          )
-                        ),
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () => Navigator.pop(context, choosenPlaces),
-                                child: Padding(
-                                  padding: EdgeInsets.only(bottom: 20),
-                                  child: Text('Создать маршрут')
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () => setState(() {choosenPlaces = [];}),
-                                child: Text('Очистить'),
-                              )
-                            ]
-                          )
-                        )
-                      )
-                    ]
-                  )
-                )
               ],
             ),
-            if (choosenPlace != null && userBloc.state is UserStateLoaded)
-            SlidingUpPanel(
-              controller: panelController,
-              panel: Padding(
-                padding: EdgeInsets.all(20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(child: Text(choosenPlace!.title, style: theme.textTheme.headlineMedium?.copyWith(color: Colors.black))),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.close, size: 40),
-                          onPressed: () => panelController.close(),
-                        ),
-                        BlocBuilder<UserBloc, UserState>(
-                          bloc: userBloc,
-                          builder: (context, state) {
-                            if (state is UserStateLoaded) {
-                              if (state.account.favPlaces.map((place) => place.title).toList().contains(choosenPlace!.title)) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    userBloc.add(RemoveFavPlace(place: (choosenPlace as Place)));
-                                    setState(() {});
-                                  },
-                                  child: Image.asset('assets/images/bottom_sheet/del_favorite.png', width: 80, height: 80)
-                                );
-                              } else  {
-                                return GestureDetector(
-                                  onTap: () => userBloc.add(AddFavPlace(newPlace: (choosenPlace as Place))),
-                                  child: Image.asset('assets/images/bottom_sheet/heart.png', width: 80, height: 80)
-                                );
-                              }
-                            } else {
-                              return const SizedBox.shrink();
-                            }
-                          }
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              )
-            ),
+            if (mapArguments.mode == MapMode.choosePlaces)
+            BottomPlacesPanel(panelController: panelController, choosenPlaces: choosenPlaces)
+            else if (mapArguments.mode != MapMode.choosePlaces && choosenPlace != null && userBloc.state is UserStateLoaded)
+            BottomInfoPanel(panelController: panelController, choosenPlace: choosenPlace)
+
           ],
         ),
       )

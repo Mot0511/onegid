@@ -44,7 +44,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       if (state is UserStateLoaded) {
         final account = (state as UserStateLoaded).account;
         emit(UserStateInitial());
-        account.favPlaces.remove(event.place);
+        account.favPlaces = account.favPlaces.where((place) => place.uri != event.place.uri).toList();
         emit(UserStateLoaded(account: account));
         await authRepository.removeFavPlace(account.email, event.place);
       }

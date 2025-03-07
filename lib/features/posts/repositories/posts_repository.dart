@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:onegid/features/auth/auth.dart';
+import 'package:onegid/features/auth/bloc/bloc.dart';
+import 'package:onegid/features/auth/bloc/states.dart';
 import 'package:onegid/features/map/map.dart';
 import 'package:onegid/features/posts/models/category.dart';
 import 'package:onegid/features/posts/posts.dart';
@@ -6,6 +10,8 @@ import 'package:onegid/repositories/base_repository.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart' as yandex_map;
 
 class PostsRepository extends FirebaseRepository {
+
+  final UserBloc userBloc = GetIt.I<UserBloc>();
 
   Future<void> addPost(PostModel post) async {
     final points = {};
@@ -31,10 +37,13 @@ class PostsRepository extends FirebaseRepository {
   }
 
 
-  Future<List<PostModel>> getPosts() async {
-
+  Future<List<PostModel>> getPosts(String email) async {
     final List<PostModel> posts = [];
-    final snap = await db.collection('posts').get();
+
+    final res = await db.collection('users').doc(email).get();
+    final account = res.data();
+
+    final snap = await db.collection('posts').where('region', isEqualTo: account?['region']).get();
     for (var doc in snap.docs) {
       final id = doc.id;
 
@@ -54,7 +63,8 @@ class PostsRepository extends FirebaseRepository {
         image: NetworkImage(imageUrl),
         cat: category,
         catId: data['category'],
-        places: places
+        places: places,
+        region: data.containsKey('region') ? data['region'] : null
       );
       posts.add(post);
     }

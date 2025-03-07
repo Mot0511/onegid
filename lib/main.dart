@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:onegid/app.dart';
 import 'package:onegid/features/auth/bloc/bloc.dart';
@@ -13,7 +14,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -26,12 +26,15 @@ void main() async {
   );
 
   GetIt.I.registerSingleton(AuthRepository());
-  GetIt.I.registerSingleton(PostsRepository());
   GetIt.I.registerSingleton(UserBloc(authRepository: GetIt.I<AuthRepository>()));
+  GetIt.I.registerSingleton(PostsRepository());
   GetIt.I.registerSingleton(PromocodesRepository());
   GetIt.I.registerSingleton(PostsBloc(postsRepository: GetIt.I<PostsRepository>()));
   GetIt.I.registerSingleton(PromocodesBloc(promocodesRepository: GetIt.I<PromocodesRepository>()));
 
+  // final talker = TalkerFlutter.init();
+  // GetIt.I.registerSingleton(talker);
+  // GetIt.I<Talker>().info('Talker was initialized');
 
   runApp(ChangeNotifierProvider<ThemeProvider>(
     create: (context) => ThemeProvider(),

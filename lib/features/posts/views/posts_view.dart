@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
+import 'package:onegid/features/auth/bloc/bloc.dart';
+import 'package:onegid/features/auth/bloc/states.dart';
 import 'package:onegid/features/posts/bloc/bloc.dart';
 import 'package:onegid/features/posts/bloc/events.dart';
 import 'package:onegid/features/posts/bloc/states.dart';
@@ -24,6 +26,7 @@ class _PostsState extends State<Posts> {
   final PostsRepository posts_repository = GetIt.I<PostsRepository>();
   
   final PostsBloc postsBloc = GetIt.I<PostsBloc>();
+  final UserBloc userBloc = GetIt.I<UserBloc>();
 
   @override
   Widget build(BuildContext context){
@@ -33,9 +36,11 @@ class _PostsState extends State<Posts> {
       body: RefreshIndicator(
         color: theme.primaryColor,
         onRefresh: () async {
-          final completer = Completer();
-          postsBloc.add(LoadPosts(completer: completer));
-          return completer.future;
+          if (userBloc.state is UserStateLoaded) {
+            final completer = Completer();
+            postsBloc.add(LoadPosts(completer: completer, email: (userBloc.state as UserStateLoaded).account.email));
+            return completer.future;
+          }
         },
         child: ListView(
           children: [
@@ -50,7 +55,7 @@ class _PostsState extends State<Posts> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 10),
-                    child: Text('ИНТЕРЕСНЫЕ ПОСТЫ', style: theme.textTheme.headlineMedium)
+                    child: Text(userBloc.state is UserStateLoaded ? (userBloc.state as UserStateLoaded).account.region : 'ИНТЕРЕСНЫЕ ПОСТЫ', style: theme.textTheme.headlineMedium)
                   )
                 ],
               )

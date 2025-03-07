@@ -29,19 +29,16 @@ class Home_ extends State<Home> {
 
   final PostsRepository posts_repository = GetIt.I<PostsRepository>();
 
-
   final UserBloc userBloc = GetIt.I<UserBloc>();
   final PostsBloc postsBloc = GetIt.I<PostsBloc>();
-  
-  @override
-  void initState() {
-    postsBloc.add(LoadPosts());
-  }
+
 
   void getAccount(context) async {
     final String? email = await getPrefs('email');
     if (email != null) {
       userBloc.add(LoadUser(email: email));
+      postsBloc.add(LoadPosts(email: email));
+
     } else {
       Navigator.of(context).pushNamed('/signin');
     }
@@ -58,9 +55,11 @@ class Home_ extends State<Home> {
         child: RefreshIndicator(
           color: theme.primaryColor,
           onRefresh: () async {
-            final completer = Completer();
-            postsBloc.add(LoadPosts(completer: completer));
-            return completer.future;
+            if (userBloc.state is UserStateLoaded) {
+              final completer = Completer();
+              postsBloc.add(LoadPosts(completer: completer, email: (userBloc.state as UserStateLoaded).account.email));
+              return completer.future;
+            }
           },
           child: ListView(
             children: [
