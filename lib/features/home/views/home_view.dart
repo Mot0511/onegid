@@ -106,10 +106,15 @@ class Home_ extends State<Home> {
                   builder: (context, state) {
                     if (state is UserStateLoaded) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Хороший день для прогулки, ${state.account.login}!', style: TextStyle(color: Colors.white, fontSize: 25)),
+                            Text('Хороший день для прогулки, ${state.account.login}!', style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white)),
+                            SizedBox(height: 10),
+                            Text('🔥 Ежедневная активность', style: theme.textTheme.titleMedium?.copyWith(color: Colors.white)),
+                            SizedBox(height: 10),
+                            Text(' ${state.account.dayInRow} дня(-ей)', style: theme.textTheme.titleLarge?.copyWith(color: Colors.white)),
                           ],
                         )
                       );

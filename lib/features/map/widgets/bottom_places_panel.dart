@@ -8,9 +8,10 @@ import 'package:onegid/features/map/map.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class BottomPlacesPanel extends StatelessWidget {
-  const BottomPlacesPanel({super.key, required this.panelController, required this.choosenPlaces});
+  const BottomPlacesPanel({super.key, required this.panelController, required this.choosenPlaces, required this.clearPlaces});
   final PanelController panelController;
   final List<Place> choosenPlaces;
+  final clearPlaces;
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +21,17 @@ class BottomPlacesPanel extends StatelessWidget {
       panel: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
+                  onTap: clearPlaces,
                   child: Text('Стереть ❌', style: theme.textTheme.bodyMedium?.copyWith(color: Colors.red)),
                 ),
                 GestureDetector(
+                  onTap: () => Navigator.pop(context, choosenPlaces),
                   child: Text('Создать маршрут ✅', style: theme.textTheme.bodyMedium?.copyWith(color: Colors.green)),
                 )
               ],

@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:onegid/features/auth/bloc/bloc.dart';
 import 'package:onegid/features/auth/bloc/events.dart';
 import 'package:onegid/features/auth/bloc/states.dart';
+import 'package:onegid/features/map/utils/get_position.dart';
 import 'package:onegid/utils/prefs.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart' hide MapMode, Image;
 import 'package:yandex_maps_mapkit/mapkit_factory.dart';
@@ -97,17 +98,23 @@ class _MapScreen extends State<MapScreen>{
     }
   }
 
-  void setPosition({latitude = 58.603595, longitude = 49.668023, zoom = 15.0}) {
-    _mapWindow!.map.move(
+  Future<void> setPosition({latitude = 58.603595, longitude = 49.668023, zoom = 13.0}) async {
+    if (userBloc.state is UserStateLoaded) {
+      final position = await getPosition((userBloc.state as UserStateLoaded).account.region);
+      _mapWindow!.map.move(
         CameraPosition(
-          Point(latitude: latitude, longitude: longitude),
+          position,
           zoom: zoom,
           azimuth: 0,
           tilt: 0,
         )
       );
+    }
   }
 
+  void clearPlaces() {
+    setState(() {choosenPlaces = [];});
+  }
 
   @override
   Widget build(BuildContext context){
@@ -121,7 +128,7 @@ class _MapScreen extends State<MapScreen>{
               _mapWindow = mapWindow;
               mapkit.onStart();
               mapWindow.map.addTapListener(geoObjectTapListener);
-              setPosition();
+              await setPosition();
               if (mapArguments.mode == MapMode.showPlaces){
                 search(mapArguments.argument);
               } else if (mapArguments.mode == MapMode.showPlace){
@@ -152,9 +159,9 @@ class _MapScreen extends State<MapScreen>{
               ],
             ),
             if (mapArguments.mode == MapMode.choosePlaces)
-            BottomPlacesPanel(panelController: panelController, choosenPlaces: choosenPlaces)
+              BottomPlacesPanel(panelController: panelController, choosenPlaces: choosenPlaces, clearPlaces: clearPlaces)
             else if (mapArguments.mode != MapMode.choosePlaces && choosenPlace != null && userBloc.state is UserStateLoaded)
-            BottomInfoPanel(panelController: panelController, choosenPlace: choosenPlace)
+              BottomInfoPanel(panelController: panelController, choosenPlace: choosenPlace)
 
           ],
         ),

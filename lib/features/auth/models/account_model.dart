@@ -7,6 +7,7 @@ class Account {
   String region;
   List favPlaces;
   List promocodes;
+  final int dayInRow;
 
-  Account({required this.login, required this.email, required this.region, required this.favPlaces, required this.promocodes});
+  Account({required this.login, required this.email, required this.region, required this.favPlaces, required this.promocodes, required this.dayInRow});
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl/intl.dart';
 import 'package:onegid/features/auth/bloc/bloc.dart';
 import 'package:onegid/features/auth/bloc/events.dart';
 import 'package:onegid/features/auth/bloc/states.dart';
@@ -68,6 +69,28 @@ class AuthRepository extends FirebaseRepository {
         userdata['promocodes'] = [];
       }
 
+      final nowDatetime = DateTime.now();
+      final lastTime = DateFormat('yyyy-MM-dd').format(nowDatetime);
+
+      if (!userdata.containsKey('dayInRow')) {
+        userdata['dayInRow'] = 1;
+      } else {
+        final DateTime lastDatetime = DateTime.parse(userdata['lastTime']);
+        final Duration difference = nowDatetime.difference(lastDatetime);
+        final int days = difference.inDays;
+        if (days == 1) {
+          userdata['dayInRow'] += 1;
+        } else if (days > 1) {
+          userdata['dayInRow'] = 1;
+        }
+      }
+
+      userdata['lastTime'] = lastTime;
+      await db.collection('users').doc(email).update({
+        'lastTime': userdata['lastTime'],
+        'dayInRow': userdata['dayInRow']
+      });
+
       final List<Place> places = [];
       if (userdata.containsKey('favPlaces')) {
         for (var place in userdata['favPlaces']) {
@@ -85,7 +108,8 @@ class AuthRepository extends FirebaseRepository {
         email: email, 
         region: userdata['region'],
         favPlaces: places,
-        promocodes: userdata.containsKey('promocodes') ? userdata['promocodes'] : null
+        promocodes: userdata.containsKey('promocodes') ? userdata['promocodes'] : null,
+        dayInRow: userdata['dayInRow'],
       );
     }
   }

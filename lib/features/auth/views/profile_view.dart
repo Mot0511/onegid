@@ -6,7 +6,7 @@ import 'package:onegid/features/auth/auth.dart';
 import 'package:onegid/features/auth/bloc/bloc.dart';
 import 'package:onegid/features/auth/bloc/states.dart';
 import 'package:onegid/features/auth/widgets/appbar_widget.dart';
-import 'package:onegid/features/map/map.dart';
+import 'package:onegid/features/map/map.dart' hide AppBarWidget;
 import 'package:onegid/features/posts/bloc/bloc.dart';
 import 'package:onegid/features/posts/bloc/states.dart';
 import 'package:onegid/features/posts/posts.dart';

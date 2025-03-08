@@ -40,18 +40,22 @@ class BottomInfoPanel extends StatelessWidget {
                       if (state.account.favPlaces.map((place) => place.title).toList().contains(choosenPlace!.title)) {
                         return GestureDetector(
                           onTap: () => userBloc.add(RemoveFavPlace(place: (choosenPlace as Place))),
-                          child: Image.asset('assets/images/bottom_sheet/del_favorite.png', width: 80, height: 80)
+                          child: Image.asset('assets/images/bottom_sheet/del_favorite.png', width: 80)
                         );
                       } else  {
                         return GestureDetector(
                           onTap: () => userBloc.add(AddFavPlace(newPlace: (choosenPlace as Place))),
-                          child: Image.asset('assets/images/bottom_sheet/heart.png', width: 80, height: 80)
+                          child: Image.asset('assets/images/bottom_sheet/heart.png', width: 80)
                         );
                       }
                     } else {
                       return const SizedBox.shrink();
                     }
                   }
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pushNamed('/reviews', arguments: choosenPlace),
+                  child: Image.asset('assets/images/bottom_sheet/reviews.png', width: 90)
                 )
               ],
             )

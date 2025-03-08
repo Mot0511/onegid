@@ -24,6 +24,9 @@ dependencies:
   flutter_bloc: ^9.0.0
   equatable: ^2.0.7
   sliding_up_panel: ^2.0.0+1
+  dio: ^5.8.0+1
+  env_flutter: ^0.1.4
+  intl: ^0.20.2
   # geolocator: ^13.0.2
 
 dev_dependencies:

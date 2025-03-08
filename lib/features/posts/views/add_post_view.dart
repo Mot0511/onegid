@@ -47,10 +47,12 @@ class _AddPost extends State<AddPost>{
   }
 
   void choosePlaces(BuildContext context) async {
-    final places = (await Navigator.pushNamed(context, '/map', arguments: MapArguments(mode: MapMode.choosePlaces)) as List<dynamic>);
-    setState(() {
-      choosenPlaces = (places as List<Place>);
-    });
+    final places = (await Navigator.pushNamed(context, '/map', arguments: MapArguments(mode: MapMode.choosePlaces)) as List<dynamic>?);
+    if (places != null){
+      setState(() {
+        choosenPlaces = (places as List<Place>);
+      });
+    }
   }
 
   void addPost() async {

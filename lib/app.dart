@@ -39,6 +39,7 @@ class OneGid_ extends State<OneGid>{
         '/profile': (context) => ProfileView(),
         '/settings': (context) => SettingsView(),
         '/promocodes': (context) => PromocodesView(),
+        '/reviews': (context) => ReviewsView(),
       },
     );
   }
