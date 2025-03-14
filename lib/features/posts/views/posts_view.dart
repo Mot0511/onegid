@@ -55,7 +55,7 @@ class _PostsState extends State<Posts> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 10),
-                    child: Text(userBloc.state is UserStateLoaded ? (userBloc.state as UserStateLoaded).account.region : 'ИНТЕРЕСНЫЕ ПОСТЫ', style: theme.textTheme.headlineMedium)
+                    child: Text(userBloc.state is UserStateLoaded ? (userBloc.state as UserStateLoaded).account.region : 'ИНТЕРЕСНЫЕ ПОСТЫ', style: theme.textTheme.headlineSmall)
                   )
                 ],
               )

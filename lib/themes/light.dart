@@ -17,6 +17,7 @@ final colorScheme = ColorScheme(
 final textTheme = TextTheme(
   headlineLarge: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
   headlineMedium: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+  headlineSmall: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
   titleLarge: TextStyle(fontSize: 25),
   titleMedium: TextStyle(fontSize: 18),
   titleSmall: TextStyle(fontSize: 15),

@@ -27,7 +27,9 @@ dependencies:
   dio: ^5.8.0+1
   env_flutter: ^0.1.4
   intl: ^0.20.2
-  # geolocator: ^13.0.2
+  audioplayers: ^6.3.0
+  uuid: ^4.4.2
+  file_picker: ^9.0.2
 
 dev_dependencies:
   flutter_test:

@@ -1,1 +1,1 @@
-enum MapMode {classic, showPlaces, showPlace, choosePlaces}
+enum MapMode {classic, search, showPlaces, choosePlaces}

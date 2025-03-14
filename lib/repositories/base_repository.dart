@@ -10,19 +10,16 @@ class FirebaseRepository {
   final storage = FirebaseStorage.instance;
 
   Future<String> getFireUrl(String refPath) async {
-    print(refPath);
-    final storageRef = FirebaseStorage.instance.ref();
+    final storageRef = storage.ref();
     final String url = await storageRef.child(refPath).getDownloadURL();
 
     return url;
   }
 
-  Future<void> uploadFiles(List<File> files, String refPath) async {
-    final storageRef = FirebaseStorage.instance.ref();
-    final ref = await storageRef.child(refPath);
-
-    files.forEach((File file) async {
-      await ref.putFile(file);
-    });
+  Future<void> uploadFiles(List<File> files, List paths) async {
+    for (var i = 0; i < files.length; i++) {
+      final ref = storage.ref(paths[i]);
+      await ref.putFile(files[i]);
+    }
   }
 }

@@ -6,6 +6,7 @@ import 'package:onegid/features/auth/bloc/events.dart';
 import 'package:onegid/features/auth/bloc/states.dart';
 import 'package:onegid/features/map/utils/get_position.dart';
 import 'package:onegid/utils/prefs.dart';
+import 'package:yandex_maps_mapkit/directions.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart' hide MapMode, Image;
 import 'package:yandex_maps_mapkit/mapkit_factory.dart';
 import 'package:yandex_maps_mapkit/search.dart';
@@ -55,8 +56,19 @@ class _MapScreen extends State<MapScreen>{
     return true;
   });
 
+  late final drivingRouteListener = DrivingSessionRouteListener(
+    onDrivingRoutes: (List<DrivingRoute> routes) {
+      final route = routes[0];
+      final polyline = route.geometry;
+      final polylineObject = _mapWindow?.map.mapObjects.addPolylineWithGeometry(polyline);
+      polylineObject?.setStrokeColor(Colors.green);
+    },
+    onDrivingRoutesError: (error) {}
+  );
+
   late final searchSessionListener = SearchSessionSearchListener(
     onSearchResponse: (SearchResponse response){
+      print('In listener');
       final geoObjects = response.collection
         .children
         .map((it) => it.asGeoObject())
@@ -64,21 +76,18 @@ class _MapScreen extends State<MapScreen>{
         
         _mapWindow!.map.mapObjects.clear();
         geoObjects.forEach((geoObject) {
-          if (geoObject != null){
-            final uri = geoObject.metadataContainer.get(UriObjectMetadata.factory)?.uris.first.value;
-            final Place place = Place(title: geoObject.name ?? '', position: geoObject.geometry[0].asPoint() ?? Point(latitude: 0, longitude: 0), uri: uri);
-            addPlacemark(place);
-          }
+          final Point position = geoObject.geometry[0].asPoint() ?? Point(latitude: 0, longitude: 0);
+          addPlacemark(position);
         });
         },
         onSearchError: (error){},
       );
 
   
-  void addPlacemark(Place place){
+  void addPlacemark(Point position){
     final imageProvider = image_provider.ImageProvider.fromImageProvider(const AssetImage("assets/images/point.png"));
     _mapWindow!.map.mapObjects.addPlacemark()
-      ..geometry = place.position as Point
+      ..geometry = position
       ..setIcon(imageProvider);
   }
 
@@ -95,12 +104,12 @@ class _MapScreen extends State<MapScreen>{
         searchSessionListener,
         text: searchText,
       );
+      print('After session');
     }
   }
 
-  Future<void> setPosition({latitude = 58.603595, longitude = 49.668023, zoom = 13.0}) async {
+  Future<void> setPosition({position, zoom = 13.0}) async {
     if (userBloc.state is UserStateLoaded) {
-      final position = await getPosition((userBloc.state as UserStateLoaded).account.region);
       _mapWindow!.map.move(
         CameraPosition(
           position,
@@ -116,6 +125,21 @@ class _MapScreen extends State<MapScreen>{
     setState(() {choosenPlaces = [];});
   }
 
+  void makeRoute(List<Place> places) {
+    final drivingRouter = DirectionsFactory.instance.createDrivingRouter(DrivingRouterType.Combined);  
+    final drivingOptions = DrivingOptions(routesCount: 1);
+    final vehicleOptions = DrivingVehicleOptions(); 
+    final points = places.map((place) => 
+      RequestPoint(place.position, RequestPointType.Waypoint, null, null, null)
+    ).toList();
+    final drivingSession = drivingRouter.requestRoutes(
+      drivingOptions,
+      vehicleOptions,
+      drivingRouteListener,
+      points: points,
+    );
+  }
+
   @override
   Widget build(BuildContext context){
     final mapArguments = ModalRoute.of(context)!.settings.arguments as MapArguments;
@@ -128,13 +152,17 @@ class _MapScreen extends State<MapScreen>{
               _mapWindow = mapWindow;
               mapkit.onStart();
               mapWindow.map.addTapListener(geoObjectTapListener);
-              await setPosition();
-              if (mapArguments.mode == MapMode.showPlaces){
+              final position = await getPosition((userBloc.state as UserStateLoaded).account.region);
+              await setPosition(position: position);
+              if (mapArguments.mode == MapMode.search){
                 search(mapArguments.argument);
-              } else if (mapArguments.mode == MapMode.showPlace){
-                final Place place = mapArguments.argument;
-                addPlacemark(place);
-                setPosition(latitude: place.position.latitude, longitude: place.position.longitude, zoom: 15.0);
+              } else if (mapArguments.mode == MapMode.showPlaces){
+                final places = mapArguments.argument[0];
+                final selectedPlace = mapArguments.argument[1];
+                // final routeType = mapArguments.argument[2];
+                places.forEach((place) => addPlacemark(place.position));
+                makeRoute(places);
+                await setPosition(position: selectedPlace.position, zoom: 15.0);
               }
             }),
             Column(

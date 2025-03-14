@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -31,6 +32,7 @@ class _AddPost extends State<AddPost>{
   Map<String, String>? categories;
   var imagePreview;
   List<Place> choosenPlaces = [];
+  List<String> choosenAudios = [];
 
   late final TextEditingController title = TextEditingController(text: '');
   late final TextEditingController description = TextEditingController(text: '');
@@ -46,6 +48,15 @@ class _AddPost extends State<AddPost>{
     }
   }
 
+  void pickAudios() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true, type: FileType.audio);
+
+    if (result != null) {
+      choosenAudios.addAll(result.paths.map((path) => (path as String)));
+      setState(() {});
+    }
+  }
+
   void choosePlaces(BuildContext context) async {
     final places = (await Navigator.pushNamed(context, '/map', arguments: MapArguments(mode: MapMode.choosePlaces)) as List<dynamic>?);
     if (places != null){
@@ -57,6 +68,7 @@ class _AddPost extends State<AddPost>{
 
   void addPost() async {
     if (userBloc.state is UserStateLoaded) {
+      final audios = choosenAudios.map((path) => File(path)).toList();
       final PostModel post = PostModel(
         title: title.text, 
         description: description.text,
@@ -65,10 +77,11 @@ class _AddPost extends State<AddPost>{
         cat: selectedCat,
         catId: selectedCat,
         image: imagePreview,
+        audios: audios,
+        region: (userBloc.state as UserStateLoaded).account.region,
       );
       await posts_repository.addPost(post);
     }
-    
   }
 
   @override
@@ -171,11 +184,27 @@ class _AddPost extends State<AddPost>{
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
                     child: Column(
-                      children: List.generate(choosenPlaces.length, (i) => PlaceItem(place: choosenPlaces[i]))
+                      children: List.generate(choosenPlaces.length, (i) => PlaceItem(place: choosenPlaces[i], places: choosenPlaces))
                     )
                   )
                 ],
               )
+            ),
+            Field(
+              heading: 'Аудиогид',
+              widget: Column(
+                children: [
+                  TextButton(
+                    onPressed: pickAudios,
+                    child: Text('Добавить аудиогида', style: theme.textTheme.labelLarge?.copyWith(color: Colors.blue)),
+                  ),
+                  Column(
+                    children: choosenAudios.map((path) =>
+                      AudiogidWidget(path: path, isOnDevice: true)
+                    ).toList()
+                  )
+                ],
+              ),
             ),
             Align(
               alignment: Alignment.centerRight,
@@ -186,7 +215,7 @@ class _AddPost extends State<AddPost>{
                 },
                 child: const Text('Создать пост'),
               )
-            )
+            ),
           ]
         ),
       ),

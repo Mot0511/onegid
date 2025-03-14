@@ -3,8 +3,9 @@ import 'package:onegid/features/map/map.dart';
 
 
 class PlaceItem extends StatelessWidget{
-  const PlaceItem({super.key, required this.place});
+  const PlaceItem({super.key, required this.place, required this.places});
   final Place place;
+  final List places;
 
   @override
   Widget build(BuildContext context){
@@ -27,7 +28,7 @@ class PlaceItem extends StatelessWidget{
             Expanded(
               flex: 1,
               child: InkWell(
-                onTap: () => Navigator.pushNamed(context, '/map', arguments: MapArguments(mode: MapMode.showPlace, argument: place)),
+                onTap: () => Navigator.pushNamed(context, '/map', arguments: MapArguments(mode: MapMode.showPlaces, argument: [places, place])),
                 child: Image.asset('assets/images/placesdescbtn.png'),
               )
             )

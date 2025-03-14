@@ -57,12 +57,20 @@ class Post extends StatelessWidget {
               )
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: 20, top: 20),
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Text('Связанные места', style: theme.textTheme.titleLarge),
             ),
             Column(
-              children: List.generate(post.places.length, (i) => PlaceItem(place: post.places[i])),
-            )
+              children: List.generate(post.places.length, (i) => PlaceItem(place: post.places[i], places: post.places)),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Text('Аудиогид', style: theme.textTheme.titleLarge),
+            ),
+            if (post.audios.isNotEmpty)
+            Column(
+              children: List.generate(post.audios.length, (i) => AudiogidWidget(path: post.audios[i], isOnDevice: false)),
+            ),
           ],
         )
       ),

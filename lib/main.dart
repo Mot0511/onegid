@@ -15,6 +15,7 @@ import 'package:yandex_maps_mapkit/init.dart' as init;
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +39,7 @@ void main() async {
   // GetIt.I.registerSingleton(talker);
   // GetIt.I<Talker>().info('Talker was initialized');
 
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
   runApp(ChangeNotifierProvider<ThemeProvider>(
     create: (context) => ThemeProvider(),
     builder: (context, child) => OneGid(),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:onegid/features/auth/auth.dart';
@@ -7,18 +9,23 @@ import 'package:onegid/features/map/map.dart';
 import 'package:onegid/features/posts/models/category.dart';
 import 'package:onegid/features/posts/posts.dart';
 import 'package:onegid/repositories/base_repository.dart';
+import 'package:uuid/uuid.dart';
 import 'package:yandex_maps_mapkit/mapkit.dart' as yandex_map;
 
 class PostsRepository extends FirebaseRepository {
 
   final UserBloc userBloc = GetIt.I<UserBloc>();
+  final Uuid uuid = Uuid();
 
   Future<void> addPost(PostModel post) async {
+    final postUuid = uuid.v4();
+
     final points = {};
     post.places.forEach((Place place) {
       points[place.title] = [place.position.latitude, place.position.longitude];
     });
 
+    final audiogidsUuids = post.audios.map((_) => uuid.v4()).toList();
     final data = {
       'author': post.author,
       'category': post.cat,
@@ -27,12 +34,13 @@ class PostsRepository extends FirebaseRepository {
       'photos': [{'name': 'photo0'}],
       'points': points,
       'title': post.title,
-      'voices': []
+      'voices': audiogidsUuids,
+      'region': post.region,
     };
 
-    db.collection('posts').add(data).then((snap) async {
-      final id = snap.id;
-      await uploadFiles([post.image], 'posts/$id/photo0');
+    db.collection('posts').doc(postUuid).set(data).then((snap) async {
+      await uploadFiles([post.image], ['posts/$postUuid/photo0']);
+      await uploadFiles((post.audios as List<File>), audiogidsUuids.map((uuid) => 'posts/$postUuid/$uuid.mp3').toList());
     });
   }
 
@@ -56,6 +64,13 @@ class PostsRepository extends FirebaseRepository {
 
       final List<Category> categories = await getCategories();
       final String category = categories.where((category) => category.id == data['category']).toList()[0].id;
+
+      final List<String> audiogidsUrls = [];
+      for (var uuid in data['voices']) {
+        audiogidsUrls.add(await getFireUrl('posts/$id/$uuid.mp3'));
+      }
+      // final List<String> audiogidsUrls = await data['voices'].map((uuid) async => ).toList();
+
       final PostModel post = PostModel(
         title: data['title'],
         description: data['description'],
@@ -64,7 +79,9 @@ class PostsRepository extends FirebaseRepository {
         cat: category,
         catId: data['category'],
         places: places,
-        region: data.containsKey('region') ? data['region'] : null
+        // routeType: data.containsKey('routeType') ? data['routeType'] : '0',
+        region: data.containsKey('region') ? data['region'] : null,
+        audios: audiogidsUrls
       );
       posts.add(post);
     }

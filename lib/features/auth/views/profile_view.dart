@@ -115,9 +115,10 @@ class _ProfileViewState extends State<ProfileView> {
                   bloc: userBloc,
                   builder: (context, state) {
                     if (state is UserStateLoaded) {
+                      final favPlaces = state.account.favPlaces;
                       return Column(
-                        children: state.account.favPlaces.map((place) {
-                          return PlaceItem(place: place);
+                        children: favPlaces.map((place) {
+                          return PlaceItem(place: place, places: favPlaces);
                         }).toList(),
                       );
                     } else {
