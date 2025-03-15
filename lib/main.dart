@@ -39,7 +39,6 @@ void main() async {
   // GetIt.I.registerSingleton(talker);
   // GetIt.I<Talker>().info('Talker was initialized');
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
   runApp(ChangeNotifierProvider<ThemeProvider>(
     create: (context) => ThemeProvider(),
     builder: (context, child) => OneGid(),

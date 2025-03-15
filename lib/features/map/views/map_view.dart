@@ -67,7 +67,7 @@ class _MapScreen extends State<MapScreen>{
   );
 
   late final searchSessionListener = SearchSessionSearchListener(
-    onSearchResponse: (SearchResponse response){
+    onSearchResponse: (SearchResponse response) {
       print('In listener');
       final geoObjects = response.collection
         .children
@@ -174,10 +174,11 @@ class _MapScreen extends State<MapScreen>{
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       hintText: "Поиск",
+                      hintStyle: theme.textTheme.labelMedium,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                         borderSide: const BorderSide(
-                            color: const Color(0xFFFFFFFF),
+                          color: const Color(0xFFFFFFFF),
                         )
                       ),
                     ),

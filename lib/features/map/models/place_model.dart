@@ -5,5 +5,5 @@ class Place {
 
   final String title;
   final Point position;
-  final String? uri;
+  final String uri;
 }

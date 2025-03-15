@@ -59,7 +59,7 @@ class _ReviewsViewState extends State<ReviewsView> {
                         style: theme.textTheme.labelLarge,
                         decoration: InputDecoration(
                           hintText: 'Написать отзыв...',
-                          hintStyle: theme.textTheme.labelMedium?.copyWith(color: Colors.white54),
+                          hintStyle: theme.textTheme.labelMedium,
                           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(width: 1, color: theme.colorScheme.secondary)),
                         ),
                       ),

@@ -22,7 +22,7 @@ class PostsRepository extends FirebaseRepository {
 
     final points = {};
     post.places.forEach((Place place) {
-      points[place.title] = [place.position.latitude, place.position.longitude];
+      points[place.uri] = place.title;
     });
 
     final audiogidsUuids = post.audios.map((_) => uuid.v4()).toList();
@@ -59,7 +59,7 @@ class PostsRepository extends FirebaseRepository {
       final String imageUrl = await getFireUrl('posts/$id/photo0');
       final List<Place> places = [];
       for (var entry in data['points'].entries) {
-        places.add(Place(title: entry.key, position: yandex_map.Point(latitude: entry.value[0], longitude: entry.value[1]), uri: ''));
+        places.add(Place(title: entry.value, position: yandex_map.Point(latitude: entry.value[0], longitude: entry.value[1]), uri: entry.key));
       }
 
       final List<Category> categories = await getCategories();
@@ -69,7 +69,6 @@ class PostsRepository extends FirebaseRepository {
       for (var uuid in data['voices']) {
         audiogidsUrls.add(await getFireUrl('posts/$id/$uuid.mp3'));
       }
-      // final List<String> audiogidsUrls = await data['voices'].map((uuid) async => ).toList();
 
       final PostModel post = PostModel(
         title: data['title'],

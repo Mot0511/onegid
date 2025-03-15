@@ -70,10 +70,10 @@ class _AddPost extends State<AddPost>{
     if (userBloc.state is UserStateLoaded) {
       final audios = choosenAudios.map((path) => File(path)).toList();
       final PostModel post = PostModel(
-        title: title.text, 
+        title: title.text,
         description: description.text,
         author: (userBloc.state as UserStateLoaded).account.login,
-        places: choosenPlaces, 
+        places: choosenPlaces,
         cat: selectedCat,
         catId: selectedCat,
         image: imagePreview,

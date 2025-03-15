@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 final colorScheme = ColorScheme(
-  brightness: Brightness.dark, 
+  brightness: Brightness.dark,
   primary: Colors.green,
-  onPrimary: Colors.green, 
-  secondary: Colors.white, 
-  onSecondary: Colors.white, 
-  error: Colors.red, 
-  onError: Colors.red, 
-  surface: Colors.black, 
-  onSurface: Colors.black
+  onPrimary: Colors.black,
+  secondary: Colors.white,
+  onSecondary: Colors.black,
+  error: Colors.red,
+  onError: Colors.black,
+  surface: Colors.black,
+  onSurface: Colors.white
 );
 
 final textTheme = TextTheme(
-  headlineLarge: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, color: Colors.white),
+  headlineLarge: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
   headlineMedium: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
   headlineSmall: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
   titleLarge: TextStyle(fontSize: 25, color: Colors.white),
